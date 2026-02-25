@@ -1,0 +1,141 @@
+.procedures {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+}
+
+.container {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+
+  h2 {
+    color: var(--primary-color);
+    font-size: var(--font-size-head);
+    text-align: center;
+  }
+}
+
+.gallery {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.block {
+  position: relative;
+  max-width: 344px;
+  width: 30%;
+  max-height: 456px;
+
+  img {
+    width: 100%;
+    border-radius: 4px 110px;
+    height: 100%;
+  }
+
+  p {
+    color: var(--bg-color);
+    font-size: var(--font-size-text);
+    line-height: 26px;
+    letter-spacing: 0%;
+    text-align: center;
+    position: absolute;
+    bottom: 10%;
+    right: 0;
+    left: 0;
+    z-index: 100;
+  }
+}
+
+.gradient {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to top,
+    #132b4a 0%,
+    rgba(19, 43, 74, 0.3) 40%,
+    rgba(19, 43, 74, 0) 80%,
+    rgba(19, 43, 74, 0) 100%
+  );
+  border-radius: 4px 120px;
+}
+
+.arrowButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--primary-color);
+  padding: 0;
+  background-image: url('../../../../assets/procedures/arrowRight.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+
+  &:hover {
+    background-color: var(--primary-color);
+    cursor: pointer;
+    background-image: url('../../../../assets/procedures/arrowRightHover.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+}
+
+@media screen and (max-width: 1240px) {
+  .container {
+    width: 100%;
+  }
+
+  .gallery {
+    gap: 10px;
+  }
+
+  .block {
+    max-width: 320px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .arrowButton {
+    width: 33px;
+    height: 33px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .gallery > :nth-child(3) {
+    display: none;
+  }
+  .block {
+    width: 45%;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .gallery {
+    justify-content: center;
+  }
+
+  .gallery > :nth-child(2),
+  .gallery > :nth-child(3),
+  .gallery > :nth-child(4) {
+    display: none;
+  }
+
+  .block {
+    width: 90%;
+  }
+}

@@ -1,0 +1,161 @@
+.footer {
+  max-width: 1440px;
+  width: 100%;
+  background-color: var(--primary-color);
+  background-image: url('../../../../assets/footer/background.webp');
+  margin: 0 auto;
+  padding: 50px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.container {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+
+  h2 {
+    font-size: var(--font-size-text);
+  }
+}
+
+.block {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 16px;
+
+  ul {
+    width: 100%;
+  }
+
+  li,
+  a,
+  .privacyPolicy {
+    color: var(--bg-color);
+    font-size: 16px;
+    cursor: pointer;
+  }
+}
+
+.blockContacts {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 16px;
+}
+
+.blockSocialMedia {
+  width: 20%;
+  display: flex;
+  justify-content: flex-start;
+  gap: 24px;
+}
+
+.protectedData {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-small-text);
+  cursor: pointer;
+}
+
+.imgFooter {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+
+  @media screen and (max-width: 1024px) {
+    width: 20%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    flex-wrap: wrap;
+    row-gap: 25px;
+    width: 80%;
+  }
+
+  .block {
+    width: 50%;
+  }
+
+  .blockContacts {
+    width: 50%;
+  }
+
+  .rightSide {
+    align-items: end;
+  }
+}
+
+@media screen and (max-width: 639px) {
+  .footer {
+    background-image: url('../../../../assets/footer/background.png');
+    padding: 30px 10px;
+  }
+
+  .container {
+    flex-direction: column;
+    align-items: center;
+    row-gap: 8px;
+
+    h2 {
+      padding-bottom: 20px;
+    }
+
+    > :nth-child(3) {
+      order: 1;
+    }
+
+    > :nth-child(5) {
+      order: 2;
+    }
+  }
+
+  .block {
+    width: 90%;
+
+    .privacyPolicy {
+      padding-top: 16px;
+      padding-bottom: 16px;
+    }
+  }
+
+  .protectedData {
+    display: none;
+  }
+
+  .blockContacts {
+    width: 90%;
+    display: none;
+  }
+
+  .blockSocialMedia {
+    justify-content: center;
+  }
+
+  .rightSide {
+    align-items: center;
+  }
+
+  .imgFooter {
+    display: none;
+  }
+}
+
+.protectedDataHidden {
+  display: none;
+}
+
+@media screen and (max-width: 639px) {
+  .protectedDataHidden {
+    display: block;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small-text);
+    cursor: pointer;
+  }
+}

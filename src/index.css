@@ -1,3 +1,77 @@
+:root {
+  --primary-color: #011c44;
+  --secondary-color: #2b7fff;
+  --bg-color: #ffffff;
+  --color-text-muted: #747272;
+  --color-text-black: #000000;
+  --font-big-size-head: clamp(30px, 10vw, 140px);
+  --font-size-head: clamp(32px, 8vw, 64px);
+  --font-size-text: clamp(18px, 2vw, 22px);
+  --font-size-small-text: 13px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+button {
+  cursor: pointer;
+}
+
+h1,
+h2 {
+  margin: 0;
+  font-family: 'Play', sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  width: fit-content;
+  margin: 0;
+  padding: 0;
+}
+
+p,
+li,
+button,
+span,
+a {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: 'wdth' 100;
+}
+
+a {
+  text-decoration: none;
+}
+
+h2 > span {
+  font-family: 'Play', sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.bold-blue {
+  color: var(--secondary-color);
+  font-weight: bold;
+}
+
 /* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
