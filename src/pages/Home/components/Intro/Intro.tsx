@@ -1,13 +1,18 @@
-import type { JSX } from 'react';
+import { useState, type JSX } from 'react';
 import introStyle from './intro.module.scss';
+import { ModalWindowIntro } from './ModalWindowIntro/ModalWindowIntro';
 
 export function Intro(): JSX.Element {
+  const [modalWindow, openModalWindow] = useState(false);
+
   return (
     <section className={introStyle.intro}>
       <div className={introStyle.info}>
         <p className={introStyle.text}>Косметологічна клініка</p>
         <h1 className={introStyle.head}>Beauty Zone</h1>
-        <button>Замовити дзвінок</button>
+        <button onClick={() => openModalWindow(true)} className={introStyle.infoButton}>
+          Замовити дзвінок
+        </button>
         <p className={introStyle.labelForButton}>
           Запишись та отримай безкоштовну
           <br />
@@ -23,6 +28,7 @@ export function Intro(): JSX.Element {
           ></path>
         </svg>
       </div>
+      {modalWindow && <ModalWindowIntro openModalWindow={openModalWindow} />}
     </section>
   );
 }

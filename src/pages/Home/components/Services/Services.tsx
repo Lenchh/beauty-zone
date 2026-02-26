@@ -1,8 +1,10 @@
 import type { JSX } from 'react';
 import servicesStyle from './services.module.scss';
+import buttonStyle from '../Intro/intro.module.scss';
 import gamaIcon from '../../../../assets/services/game-icons.svg';
 import serviceIcon from '../../../../assets/services/services.svg';
 import crownIcon from '../../../../assets/services/crown-icons.svg';
+import { Link } from 'react-router-dom';
 
 export function Services(): JSX.Element {
   return (
@@ -27,6 +29,9 @@ export function Services(): JSX.Element {
             <p>Наша мета - підкреслити переваги та приховати недоліки, а не переробити</p>
           </div>
         </div>
+        <Link to={'/aboutUs'} className={buttonStyle.infoButton}>
+          Детальніше &rarr;
+        </Link>
       </div>
     </section>
   );

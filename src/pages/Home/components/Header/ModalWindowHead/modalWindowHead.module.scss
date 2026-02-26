@@ -1,0 +1,61 @@
+@import '../../Footer/footer.module.scss';
+
+.modal {
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #ffffff;
+  z-index: 1000;
+}
+
+.content {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 16px 20px;
+  gap: 20px;
+}
+
+.close {
+  width: 24px;
+  height: 24px;
+  color: var(--primary-color);
+  font-size: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  border: 2px solid transparent;
+  background-color: transparent;
+  padding: 6px;
+}
+
+.element {
+  @extend .block;
+  gap: 16px;
+
+  .listInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .listSocialMedia {
+    display: flex;
+    justify-content: flex-start;
+    gap: 16px;
+  }
+
+  li,
+  a {
+    color: var(--primary-color);
+    font-size: var(--font-size-text);
+    cursor: pointer;
+  }
+}

@@ -15,19 +15,23 @@
   flex-direction: column;
   padding-left: 15%;
   gap: 10px;
+}
 
-  button {
-    background-color: var(--secondary-color);
-    color: var(--bg-color);
-    border: none;
-    border-radius: 32px;
-    width: 220px;
-    height: 50px;
-    transition: transform 0.4s;
+.infoButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  background-color: var(--secondary-color);
+  color: var(--bg-color);
+  border: none;
+  border-radius: 32px;
+  width: 220px;
+  height: 50px;
+  transition: transform 0.4s;
 
-    &:hover {
-      transform: scale(1.1);
-    }
+  &:hover {
+    transform: scale(1.1);
   }
 }
 

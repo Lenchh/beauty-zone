@@ -26,7 +26,9 @@ export function Contacts(): JSX.Element {
             <input type="text" id="firstName" name="firstName" placeholder="Ваше ім'я та прізвище" />
             <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Ваш номер телефону" />
             <input type="text" id="email" name="email" placeholder="Ваша електронна пошта" />
-            <button type="button">Записатись безкоштовно</button>
+            <button type="button" className={contactsStyle.buttonSubmit}>
+              Записатись безкоштовно
+            </button>
             <p className={contactsStyle.agreement}>
               Натискаючи на кнопку я погоджуюсь
               <br />
