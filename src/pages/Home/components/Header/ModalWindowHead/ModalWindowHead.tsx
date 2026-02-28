@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { NavLink } from 'react-router-dom';
 import windowHeadStyle from './modalWindowHead.module.scss';
 import headerStyle from '../header.module.scss';
 import phoneIcon from '../../../../../assets/header/telephone.svg';
@@ -10,6 +11,9 @@ interface props {
 }
 
 export function ModalWindowHead({ openModalWindow }: props): JSX.Element {
+  const getLinkClass = ({ isActive }: { isActive: boolean }) =>
+    isActive ? `${headerStyle.link} ${headerStyle.active}` : headerStyle.link;
+
   return (
     <div className={windowHeadStyle.modal}>
       <div className={windowHeadStyle.content}>
@@ -26,16 +30,20 @@ export function ModalWindowHead({ openModalWindow }: props): JSX.Element {
         <div className={windowHeadStyle.element}>
           <ul className={windowHeadStyle.listInfo}>
             <li>
-              <a href="">Про нас</a>
+              {' '}
+              <NavLink to={'/'} className={getLinkClass}>
+                Про нас
+              </NavLink>
             </li>
             <li>
-              <a href="#services">Чому ми</a>
+              <NavLink to={'/aboutUs'} className={getLinkClass}>
+                Чому ми
+              </NavLink>
             </li>
             <li>
-              <a href="#procedures">Наші процедури</a>
-            </li>
-            <li>
-              <a href="#contacts">Контакти</a>
+              <NavLink to={'/procedures'} className={getLinkClass}>
+                Наші процедури
+              </NavLink>
             </li>
           </ul>
           <ul className={windowHeadStyle.listSocialMedia}>

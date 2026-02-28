@@ -1,4 +1,5 @@
-import { useState, type JSX } from 'react';
+import { useEffect, useState, type JSX } from 'react';
+import { NavLink } from 'react-router-dom';
 import headerStyle from './header.module.scss';
 import phoneIcon from '../../../../assets/header/telephone.svg';
 import facebookIcon from '../../../../assets/header/facebook.svg';
@@ -8,6 +9,38 @@ import { ModalWindowHead } from './ModalWindowHead/ModalWindowHead';
 
 export function Header(): JSX.Element {
   const [modalWindow, openModalWindow] = useState(false);
+
+  useEffect(() => {
+    if (modalWindow) {
+      const scrollY = window.scrollY;
+
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+      document.body.style.overflow = 'hidden';
+    } else {
+      const scrollY = document.body.style.top;
+
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
+    }
+
+    return () => {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+    };
+  }, [modalWindow]);
+
+  const getLinkClass = ({ isActive }: { isActive: boolean }) =>
+    isActive ? `${headerStyle.link} ${headerStyle.active}` : headerStyle.link;
 
   return (
     <>
@@ -19,15 +52,21 @@ export function Header(): JSX.Element {
             Zone
           </h2>
           <ul className={headerStyle.listInfo}>
-            <li className="bold-blue">Про нас</li>
             <li>
-              <a href="#services">Чому ми</a>
+              {' '}
+              <NavLink to={'/'} className={getLinkClass}>
+                Про нас
+              </NavLink>
             </li>
             <li>
-              <a href="#procedures">Наші процедури</a>
+              <NavLink to={'/aboutUs'} className={getLinkClass}>
+                Чому ми
+              </NavLink>
             </li>
             <li>
-              <a href="#contacts">Контакти</a>
+              <NavLink to={'/procedures'} className={getLinkClass}>
+                Наші процедури
+              </NavLink>
             </li>
           </ul>
           <ul className={headerStyle.listContacts}>

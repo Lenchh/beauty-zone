@@ -4,7 +4,7 @@ import mapPicture from '../../../../assets/contacts/map.webp';
 
 export function Contacts(): JSX.Element {
   return (
-    <section className={contactsStyle.contacts} id="contacts">
+    <section className={contactsStyle.contacts}>
       <div className={contactsStyle.container}>
         <h2>
           Як нас <span className="bold-blue">знайти</span>

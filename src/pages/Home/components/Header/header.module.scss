@@ -21,7 +21,8 @@
     color: var(--secondary-color);
   }
 
-  ul {
+  ul,
+  nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -29,8 +30,6 @@
 
   a,
   li {
-    font-size: var(--font-size-text);
-    color: var(--primary-color);
     cursor: pointer;
   }
 }
@@ -47,12 +46,18 @@
   gap: 50px;
 }
 
-.listInfo > :first-child {
-  color: var(--secondary-color);
-}
-
 .listContacts {
   gap: 30px;
+}
+
+.link {
+  font-size: var(--font-size-text);
+  color: var(--primary-color);
+
+  &.active {
+    color: var(--secondary-color);
+    font-weight: bold;
+  }
 }
 
 .menu {

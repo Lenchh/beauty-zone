@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { NavLink } from 'react-router-dom';
 import footerStyle from './footer.module.scss';
 import phoneIcon from '../../../../assets/footer/telephone.svg';
 import facebookIcon from '../../../../assets/footer/facebook.svg';
@@ -16,16 +17,14 @@ export function Footer(): JSX.Element {
         </h2>
         <ul className={`${footerStyle.block} ${footerStyle.rightSide}`}>
           <li>
-            <a href="">Про нас</a>
+            {' '}
+            <NavLink to={'/'}>Про нас</NavLink>
           </li>
           <li>
-            <a href="#services">Чому ми</a>
+            <NavLink to={'/aboutUs'}>Чому ми</NavLink>
           </li>
           <li>
-            <a href="#procedures">Наші процедури</a>
-          </li>
-          <li>
-            <a href="#contacts">Контакти</a>
+            <NavLink to={'/procedures'}>Наші процедури</NavLink>
           </li>
         </ul>
         <div className={footerStyle.block}>
