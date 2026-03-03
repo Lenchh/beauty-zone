@@ -103,7 +103,8 @@
 @media screen and (max-width: 450px) {
   .intro {
     background-image:
-      linear-gradient(to bottom, transparent 70%, #ffffff 100%), url('../../../../assets/intro/backgroundFor768px.webp');
+      linear-gradient(to bottom, transparent 70%, #ffffff 100%),
+      url('../../../../assets/HomePage/intro/backgroundFor768px.webp');
     background-size: cover;
     background-position: right top;
   }
