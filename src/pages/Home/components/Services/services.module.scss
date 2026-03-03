@@ -7,7 +7,7 @@
   padding: 15px;
   padding-bottom: 150px;
   padding-top: 0;
-  background-image: url('../../../../assets/services/background.svg');
+  background-image: url('../../../../assets/HomePage/services/background.svg');
   background-size: cover;
   background-position: top;
   position: relative;
@@ -84,7 +84,7 @@
 
 @media screen and (max-width: 768px) {
   .services {
-    background-image: url('../../../../assets/services/backgroundFor768px.svg');
+    background-image: url('../../../../assets/HomePage/services/backgroundFor768px.svg');
     background-size: cover;
     background-position: top;
   }

@@ -1,9 +1,9 @@
 import type { JSX } from 'react';
 import servicesStyle from './services.module.scss';
 import buttonStyle from '../Intro/intro.module.scss';
-import gameIcon from '../../../../assets/services/game-icons.svg';
-import serviceIcon from '../../../../assets/services/services.svg';
-import crownIcon from '../../../../assets/services/crown-icons.svg';
+import gameIcon from '../../../../assets/HomePage/services/game-icons.svg';
+import serviceIcon from '../../../../assets/HomePage/services/services.svg';
+import crownIcon from '../../../../assets/HomePage/services/crown-icons.svg';
 import { Link } from 'react-router-dom';
 import { CardService } from './Components/CardService';
 

@@ -1,15 +1,26 @@
-import type { JSX } from 'react';
+import { useEffect, useRef, useState, type JSX } from 'react';
 import { Header } from '../Home/components/Header/Header';
 import aboutStyle from './about.module.scss';
-import gameIcon from '../../assets/services/game-icons.svg';
-import serviceIcon from '../../assets/services/services.svg';
-import crownIcon from '../../assets/services/crown-icons.svg';
-import shieldIcon from '../../assets/services/shieldIcon.svg';
-import personIcon from '../../assets/services/personIcon.svg';
-import spaIcon from '../../assets/services/spaIcon.svg';
+import gameIcon from '../../assets/HomePage/services/game-icons.svg';
+import serviceIcon from '../../assets/HomePage/services/services.svg';
+import crownIcon from '../../assets/HomePage/services/crown-icons.svg';
+import shieldIcon from '../../assets/HomePage/services/shieldIcon.svg';
+import personIcon from '../../assets/HomePage/services/personIcon.svg';
+import spaIcon from '../../assets/HomePage/services/spaIcon.svg';
+import goldCertificate from '../../assets/AboutPage/awards/Black and Gold Certificate .webp';
+import blueCertificate from '../../assets/AboutPage/awards/Blue Certificate.webp';
+import whiteCertificate from '../../assets/AboutPage/awards/Certificate.webp';
+import goldDiploma from '../../assets/AboutPage/awards/White and Gold Diploma.webp';
+import whiteDiploma from '../../assets/AboutPage/awards/Diploma.webp';
 import { CardService } from '../Home/components/Services/Components/CardService';
+import { CertificateModal } from './Components/CertificateModal/CertificateModal';
+import { specialists } from '../../data/specialists';
+import { CardSpecialist } from './Components/CardSpecialist/CardSpecialist';
+import { Footer } from '../Home/components/Footer/Footer';
 
 export function AboutPage(): JSX.Element {
+  const [selectedAward, setSelectedAward] = useState<string | null>(null);
+
   const cardsServices = [
     {
       id: 1,
@@ -45,6 +56,35 @@ export function AboutPage(): JSX.Element {
       iconCard: personIcon,
     },
   ];
+
+  const scrollPosition = useRef(0);
+
+  useEffect(() => {
+    if (selectedAward) {
+      scrollPosition.current = window.scrollY;
+
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollPosition.current}px`;
+      document.body.style.width = '100%';
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+
+      window.scrollTo(0, scrollPosition.current);
+    }
+
+    return () => {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+    };
+  }, [selectedAward]);
+
+  const awards = [goldCertificate, blueCertificate, whiteCertificate, goldDiploma, whiteDiploma];
   return (
     <div className={aboutStyle.aboutPage}>
       <Header />
@@ -55,7 +95,29 @@ export function AboutPage(): JSX.Element {
             <CardService key={card.id} description={card.description} iconCard={card.iconCard} />
           ))}
         </div>
+        <h2>Гарантія якості та безпеки</h2>
+        <div className={`${aboutStyle.awardsBlocks} ${aboutStyle.scrollStyled}`}>
+          {awards.map((award, index) => (
+            <img
+              src={award}
+              alt="award"
+              className={aboutStyle.award}
+              key={index}
+              onClick={() => setSelectedAward(award)}
+            />
+          ))}
+        </div>
+        <h2>
+          Наші <span className="bold-blue">спеціалісти</span>
+          <div className={aboutStyle.benefitsBlocks}>
+            {specialists.map((specialist) => (
+              <CardSpecialist specialist={specialist} key={specialist.id} />
+            ))}
+          </div>
+        </h2>
       </div>
+      <Footer />
+      {selectedAward && <CertificateModal certificate={selectedAward} setSelectedAward={setSelectedAward} />}
     </div>
   );
 }

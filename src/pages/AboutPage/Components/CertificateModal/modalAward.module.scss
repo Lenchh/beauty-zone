@@ -1,0 +1,50 @@
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #2b80ff63;
+  z-index: 1000;
+  padding: 15px;
+}
+
+.close {
+  align-self: flex-end;
+  width: 35px;
+  height: 35px;
+  color: var(--secondary-color);
+  font-size: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  border: 2px solid white;
+  border-radius: 50%;
+  background-color: white;
+  padding: 0;
+}
+
+.close:hover {
+  border: 3px solid var(--secondary-color);
+}
+
+.wrap {
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.container {
+  max-width: 90vw;
+  max-height: 85vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 24px;
+  border-radius: 24px;
+}

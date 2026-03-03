@@ -2,9 +2,9 @@ import type { JSX } from 'react';
 import { Link } from 'react-router-dom';
 import proceduresStyle from './procedures.module.scss';
 import buttonStyle from '../Intro/intro.module.scss';
-import procedure1 from '../../../../assets/procedures/procedure1.webp';
-import procedure2 from '../../../../assets/procedures/procedure2.webp';
-import procedure3 from '../../../../assets/procedures/procedure3.webp';
+import procedure1 from '../../../../assets/HomePage/procedures/procedure1.webp';
+import procedure2 from '../../../../assets/HomePage/procedures/procedure2.webp';
+import procedure3 from '../../../../assets/HomePage/procedures/procedure3.webp';
 
 export function Procedures(): JSX.Element {
   return (

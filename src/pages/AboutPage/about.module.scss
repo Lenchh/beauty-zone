@@ -5,7 +5,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  // padding: 15px;
   background: linear-gradient(to bottom, #2b80ff79, transparent);
 }
 
@@ -35,6 +34,24 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 20px;
+}
+
+.awardsBlocks {
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+}
+
+.award {
+  width: 400px;
+  border-radius: 24px;
+  cursor: pointer;
+}
+
+.scrollStyled {
+  scrollbar-color: #011c44c8 #f1f1f100;
+  scrollbar-width: thin;
 }
 
 @media screen and (max-width: 1024px) {

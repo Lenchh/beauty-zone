@@ -1,8 +1,8 @@
 import type { JSX } from 'react';
 import promoStyle from './promo.module.scss';
-import beforeResultImg from '../../../../assets/promo/beforeResult.webp';
-import afterResultImg from '../../../../assets/promo/afterResult.webp';
-import starIcon from '../../../../assets/promo/Star1.svg';
+import beforeResultImg from '../../../../assets/HomePage/promo/beforeResult.webp';
+import afterResultImg from '../../../../assets/HomePage/promo/afterResult.webp';
+import starIcon from '../../../../assets/HomePage/promo/Star1.svg';
 
 export function Promo(): JSX.Element {
   return (

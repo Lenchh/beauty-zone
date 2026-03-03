@@ -50,13 +50,13 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-image: url('../../../../assets/promo/Star2.svg');
+  background-image: url('../../../../assets/HomePage/promo/Star2.svg');
   background-position: top right;
   background-repeat: no-repeat;
 
   > :first-child {
     align-self: flex-start;
-    background-image: url('../../../../assets/promo/Star3.svg');
+    background-image: url('../../../../assets/HomePage/promo/Star3.svg');
     background-position: bottom right;
     background-repeat: no-repeat;
   }
@@ -108,7 +108,7 @@
   }
 
   .container {
-    background-image: url('../../../../assets/promo/Star1For768px.svg');
+    background-image: url('../../../../assets/HomePage/promo/Star1For768px.svg');
     background-position: bottom right;
     background-repeat: no-repeat;
     padding-top: 0;
