@@ -1,4 +1,19 @@
-interface IProcedure {
+import relaxMassage from '../assets/ProcedurePage/relaxMassage.webp';
+import anticellulite from '../assets/ProcedurePage/anticellulite.webp';
+import faceCleaning from '../assets/ProcedurePage/faceCleaning.webp';
+import peeling from '../assets/ProcedurePage/peeling.webp';
+import lipInjection from '../assets/ProcedurePage/lipInjection.webp';
+import botox from '../assets/ProcedurePage/botox.webp';
+import lashes from '../assets/ProcedurePage/lashes.webp';
+import eyelashExtension from '../assets/ProcedurePage/eyelashExtension.webp';
+import spaManicure from '../assets/ProcedurePage/spaManicure.webp';
+import pedicure from '../assets/ProcedurePage/pedicure.webp';
+import keratin from '../assets/ProcedurePage/keratin.webp';
+import hairColoring from '../assets/ProcedurePage/hairColoring.webp';
+import alginateMask from '../assets/ProcedurePage/alginateMask.webp';
+import clayMask from '../assets/ProcedurePage/clayMask.webp';
+
+export interface IProcedure {
   id: number;
   title: string;
   description: string;
@@ -16,7 +31,7 @@ export const procedures: IProcedure[] = [
     price: 850,
     duration: '60 хв',
     category: 'Масаж',
-    imgUrl: '/images/procedures/relax-massage.jpg',
+    imgUrl: relaxMassage,
   },
   {
     id: 2,
@@ -26,7 +41,7 @@ export const procedures: IProcedure[] = [
     price: 900,
     duration: '60 хв',
     category: 'Масаж',
-    imgUrl: '/images/procedures/anticellulite.jpg',
+    imgUrl: anticellulite,
   },
   {
     id: 3,
@@ -35,7 +50,7 @@ export const procedures: IProcedure[] = [
     price: 700,
     duration: '45 хв',
     category: 'Косметологія',
-    imgUrl: '/images/procedures/face-cleaning.jpg',
+    imgUrl: faceCleaning,
   },
   {
     id: 4,
@@ -45,26 +60,27 @@ export const procedures: IProcedure[] = [
     price: 850,
     duration: '40 хв',
     category: 'Косметологія',
-    imgUrl: '/images/procedures/peeling.jpg',
+    imgUrl: peeling,
   },
   {
     id: 5,
-    title: 'SPA-ритуал "Шоколадна насолода"',
-    description: 'Комплексний догляд: кавовий скраб, шоколадне обгортання та легкий зволожуючий масаж.',
-    price: 1200,
-    duration: '90 хв',
-    category: 'Тіло',
-    imgUrl: '/images/procedures/choco-wrap.jpg',
+    title: 'Контурна пластика губ',
+    description:
+      "Корекція форми та збільшення об'єму губ за допомогою філерів на основі гіалуронової кислоти. Максимально природний результат.",
+    price: 4500,
+    duration: '60 хв',
+    category: "Ін'єкційна косметологія",
+    imgUrl: lipInjection,
   },
   {
     id: 6,
-    title: 'Детокс-обгортання з водоростями',
+    title: 'Ботулінотерапія (усунення зморшок)',
     description:
-      'Процедура для виведення токсинів, глибокого зволоження шкіри та підвищення її тонусу. Ідеально для розслаблення та корекції фігури.',
-    price: 1100,
-    duration: '80 хв',
-    category: 'Тіло',
-    imgUrl: '/images/procedures/algae-wrap.jpg',
+      "Безпечна та ефективна процедура для розгладження мімічних зморшок на лобі, у зоні міжбрів'я та навколо очей.",
+    price: 3200,
+    duration: '45 хв',
+    category: "Ін'єкційна косметологія",
+    imgUrl: botox,
   },
   {
     id: 7,
@@ -73,7 +89,7 @@ export const procedures: IProcedure[] = [
     price: 650,
     duration: '60 хв',
     category: "Б'юті-послуги",
-    imgUrl: '/images/procedures/lashes.jpg',
+    imgUrl: lashes,
   },
   {
     id: 8,
@@ -83,7 +99,7 @@ export const procedures: IProcedure[] = [
     price: 700,
     duration: '120 хв',
     category: "Б'юті-послуги",
-    imgUrl: '/images/procedures/eyelash-extension.jpg',
+    imgUrl: eyelashExtension,
   },
   {
     id: 9,
@@ -93,7 +109,7 @@ export const procedures: IProcedure[] = [
     price: 550,
     duration: '120 хв',
     category: 'Нігтьовий сервіс',
-    imgUrl: '/images/procedures/spa-manicure.jpg',
+    imgUrl: spaManicure,
   },
   {
     id: 10,
@@ -102,7 +118,7 @@ export const procedures: IProcedure[] = [
     price: 750,
     duration: '90 хв',
     category: 'Нігтьовий сервіс',
-    imgUrl: '/images/procedures/pedicure.jpg',
+    imgUrl: pedicure,
   },
   {
     id: 11,
@@ -112,7 +128,7 @@ export const procedures: IProcedure[] = [
     price: 1800,
     duration: '150 хв',
     category: 'Волосся',
-    imgUrl: '/images/procedures/keratin.jpg',
+    imgUrl: keratin,
   },
   {
     id: 12,
@@ -122,6 +138,25 @@ export const procedures: IProcedure[] = [
     price: 2500,
     duration: '180 хв',
     category: 'Волосся',
-    imgUrl: '/images/procedures/hair-coloring.jpg',
+    imgUrl: hairColoring,
+  },
+  {
+    id: 13,
+    title: 'Альгінатна маска "Глибоке зволоження"',
+    description: 'На основі екстракту морських водоростей. Миттєво зволожує шкіру, знімає набряки, покращує кровообіг.',
+    price: 850,
+    duration: '40 хв',
+    category: 'Маски для обличчя',
+    imgUrl: alginateMask,
+  },
+  {
+    id: 14,
+    title: 'Очищуюча детокс-маска з чорною глиною',
+    description:
+      'Для жирної та комбінованої шкіри. Глибоко очищує пори, ефективно бореться з висипаннями, регулює виділення себуму та вирівнює тон обличчя.',
+    price: 700,
+    duration: '35 хв',
+    category: 'Маски для обличчя',
+    imgUrl: clayMask,
   },
 ];

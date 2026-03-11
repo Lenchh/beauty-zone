@@ -108,13 +108,13 @@ export function AboutPage(): JSX.Element {
           ))}
         </div>
         <h2>
-          Наші <span className="bold-blue">спеціалісти</span>
-          <div className={aboutStyle.benefitsBlocks}>
-            {specialists.map((specialist) => (
-              <CardSpecialist specialist={specialist} key={specialist.id} />
-            ))}
-          </div>
+          Наші <span className="bold-blue">спеціалісти</span>{' '}
         </h2>
+        <div className={aboutStyle.benefitsBlocks}>
+          {specialists.map((specialist) => (
+            <CardSpecialist specialist={specialist} key={specialist.id} />
+          ))}
+        </div>
       </div>
       <Footer />
       {selectedAward && <CertificateModal certificate={selectedAward} setSelectedAward={setSelectedAward} />}
