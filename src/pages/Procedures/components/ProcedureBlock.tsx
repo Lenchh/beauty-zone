@@ -13,7 +13,8 @@ export function ProcedureBlock({ procedure }: props): JSX.Element {
       <img src={procedure.imgUrl} alt={procedure.title} className={procedureStyle.avatar} />
       <div className={`${procedureStyle.info} ${procedureStyle.scrollStyled}`}>
         <p>{procedure.title}</p>
-        <p className={procedureStyle.experience}>{`${procedure.price} грн`}</p>
+        <p className={procedureStyle.experience}>{procedure.duration}</p>
+        <p className="bold-blue">{`${procedure.price} грн`}</p>
         <button className={buttonStyle.moreDetails}>Детальніше</button>
       </div>
     </div>

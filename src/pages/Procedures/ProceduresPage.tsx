@@ -3,6 +3,7 @@ import { Header } from '../Home/components/Header/Header';
 import proceduresStyle from './procedures.module.scss';
 import { procedures } from '../../data/procedures';
 import { ProcedureBlock } from './components/ProcedureBlock';
+import { Footer } from '../Home/components/Footer/Footer';
 
 export function ProceduresPage(): JSX.Element {
   const allCategories = [
@@ -24,8 +25,8 @@ export function ProceduresPage(): JSX.Element {
           <div className={proceduresStyle.filters}>
             <h2>Фільтр</h2>
             {allCategories.map((category, index) => (
-              <div key={index} className={proceduresStyle.customCheckbox}>
-                <input type="checkbox" name={category} id={category} />
+              <div key={index}>
+                <input type="checkbox" name={category} id={category} className={proceduresStyle.customCheckbox} />
                 <label htmlFor={category}>{category}</label>
               </div>
             ))}
@@ -37,6 +38,7 @@ export function ProceduresPage(): JSX.Element {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
