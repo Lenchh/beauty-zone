@@ -62,17 +62,18 @@ export function AboutPage(): JSX.Element {
   useEffect(() => {
     if (selectedAward) {
       scrollPosition.current = window.scrollY;
-
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
       document.body.style.position = 'fixed';
       document.body.style.top = `-${scrollPosition.current}px`;
       document.body.style.width = '100%';
       document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
     } else {
       document.body.style.position = '';
       document.body.style.top = '';
       document.body.style.width = '';
       document.body.style.overflow = '';
-
+      document.body.style.paddingRight = '';
       window.scrollTo(0, scrollPosition.current);
     }
 
@@ -81,6 +82,7 @@ export function AboutPage(): JSX.Element {
       document.body.style.top = '';
       document.body.style.width = '';
       document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
     };
   }, [selectedAward]);
 
