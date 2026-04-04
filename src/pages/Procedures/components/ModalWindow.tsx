@@ -56,6 +56,11 @@ export function ModalWindow(): JSX.Element {
 
   const handleDateChange = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedDateString = e.target.value;
+    if (selectedDateString < minAvailableDate) {
+      toastrInfo('Ця дата недоступна.', 'Будь ласка, оберіть дату в майбутньому.');
+      setFormData({ ...formData, date: '' });
+      return;
+    }
     const dateObject = new Date(selectedDateString);
     const dayOfWeek = dateObject.getDay();
 
@@ -106,9 +111,15 @@ export function ModalWindow(): JSX.Element {
                 toastrInfo('Будь ласка, заповніть всі поля!', 'Всі поля мають бути заповнені.');
                 return;
               } else {
+                const orderData = {
+                  procedureId: currentProcedure?.id,
+                  procedureName: currentProcedure?.title,
+                  customer: formData,
+                };
+                console.log('Новий запис: ', orderData);
                 toastrSuccess(`Дякуємо, ${formData.name}!`, 'Ваша заявка успішно прийнята.');
+                closeWindow();
               }
-              closeWindow();
             }}
             className={modalStyle.orderForm}
           >

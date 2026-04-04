@@ -10,6 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/procedures" element={<ProceduresPage />} />
+        <Route path="/procedures/procedure/:procedureId" element={<ProceduresPage />} />
         <Route path="/aboutUs" element={<AboutPage />} />
       </Routes>
     </HashRouter>

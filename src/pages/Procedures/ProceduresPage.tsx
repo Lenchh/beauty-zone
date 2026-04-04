@@ -1,13 +1,17 @@
 import { useEffect, useRef, useState, type JSX } from 'react';
 import { Header } from '../Home/components/Header/Header';
 import proceduresStyle from './procedures.module.scss';
-import { procedures } from '../../data/procedures';
+import { procedures, type IProcedure } from '../../data/procedures';
 import { ProcedureBlock } from './components/ProcedureBlock';
 import { Footer } from '../Home/components/Footer/Footer';
 import { ModalWindow } from './components/ModalWindow';
-import { useAppSelector } from '../../featchers/hooks';
+import { useAppDispatch, useAppSelector } from '../../featchers/hooks';
+import { useParams } from 'react-router-dom';
+import { openModal } from '../../featchers/slices/modalSlice';
 
 export function ProceduresPage(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const { procedureId } = useParams();
   const allCategories = [
     'Масаж',
     'Косметологія',
@@ -55,6 +59,17 @@ export function ProceduresPage(): JSX.Element {
       document.body.style.paddingRight = '';
     };
   }, [isOpen]);
+
+  useEffect(() => {
+    if (procedureId) {
+      const foundProcedure: IProcedure | undefined = procedures.find(
+        (procedure) => String(procedure.id) === procedureId
+      );
+      if (foundProcedure) {
+        dispatch(openModal(foundProcedure));
+      }
+    }
+  }, [procedures, procedureId]);
 
   return (
     <div className={proceduresStyle.proceduresPage}>

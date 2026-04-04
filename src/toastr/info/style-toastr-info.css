@@ -21,7 +21,7 @@
   background-color: #ccd7fc !important;
 }
 
-.closebtn > i {
+.closebtn {
   color: #000617;
   font-weight: 500;
 }

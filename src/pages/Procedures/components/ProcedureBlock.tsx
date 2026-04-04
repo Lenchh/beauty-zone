@@ -4,6 +4,7 @@ import type { IProcedure } from '../../../data/procedures';
 import procedureStyle from '../../AboutPage/Components/CardSpecialist/cardSpecialist.module.scss';
 import buttonStyle from '../procedures.module.scss';
 import { openModal } from '../../../featchers/slices/modalSlice';
+import { Link } from 'react-router-dom';
 
 interface props {
   procedure: IProcedure;
@@ -20,9 +21,16 @@ export function ProcedureBlock({ procedure }: props): JSX.Element {
         <p>{procedure.title}</p>
         <p className={procedureStyle.experience}>{procedure.duration}</p>
         <p className="bold-blue">{`${procedure.price} грн`}</p>
-        <button className={buttonStyle.moreDetails} onClick={handleClick}>
+        <Link
+          to={`/procedures/procedure/${procedure.id}`}
+          key={procedure.id}
+          className={buttonStyle.moreDetails}
+          onClick={handleClick}
+        >
+          {/* <button className={buttonStyle.moreDetails} onClick={handleClick}> */}
           Детальніше
-        </button>
+          {/* </button> */}
+        </Link>
       </div>
     </div>
   );
