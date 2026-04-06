@@ -69,7 +69,7 @@ export function ProceduresPage(): JSX.Element {
         dispatch(openModal(foundProcedure));
       }
     }
-  }, [procedures, procedureId]);
+  }, [procedureId]);
 
   return (
     <div className={proceduresStyle.proceduresPage}>
