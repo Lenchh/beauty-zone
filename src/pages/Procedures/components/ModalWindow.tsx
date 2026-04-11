@@ -5,6 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import modalStyle from './modalWindow.module.scss';
 import { toastrSuccess } from '../../../toastr/success/toastr-options-success';
 import { toastrInfo } from '../../../toastr/info/toastr-options-info';
+import scheduleIcon from '../../../assets/ProcedurePage/schedule.svg';
+import priceIcon from '../../../assets/ProcedurePage/price.svg';
+import userIcon from '../../../assets/ProcedurePage/user.svg';
+import telephoneIcon from '../../../assets/ProcedurePage/telephone.svg';
+import calendarIcon from '../../../assets/ProcedurePage/calendar.svg';
 
 export function ModalWindow(): JSX.Element {
   const getMinDate = () => {
@@ -91,18 +96,26 @@ export function ModalWindow(): JSX.Element {
         <img src={currentProcedure?.imgUrl} alt={currentProcedure?.title} className={modalStyle.picture} />
         <div className={`${modalStyle.info} ${modalStyle.scrollStyled}`}>
           <div className={modalStyle.textContent}>
-            <div className={modalStyle.textHeader}>
-              <h2 className={modalStyle.title}>{currentProcedure?.title}</h2>
+            <h2 className={modalStyle.title}>{currentProcedure?.title}</h2>
+            <p>{currentProcedure?.description}</p>
+            <div className={modalStyle.infoBlocks}>
+              <div className={modalStyle.block}>
+                <img src={scheduleIcon} alt="schedule" />
+                <p>
+                  <span>Тривалість:</span>
+                  <br />
+                  {currentProcedure?.duration}
+                </p>
+              </div>
+              <div className={modalStyle.block}>
+                <img src={priceIcon} alt="price" />
+                <p className="bold-blue">
+                  <span>Ціна:</span>
+                  <br />
+                  {currentProcedure?.price} грн
+                </p>
+              </div>
             </div>
-            <p>
-              <span>Опис:</span> {currentProcedure?.description}
-            </p>
-            <p>
-              <span>Тривалість:</span> {currentProcedure?.duration}
-            </p>
-            <p className="bold-blue">
-              <span>Ціна:</span> {currentProcedure?.price} грн
-            </p>
           </div>
           <form
             onSubmit={(e) => {
@@ -124,29 +137,51 @@ export function ModalWindow(): JSX.Element {
             className={modalStyle.orderForm}
           >
             <h2 className={modalStyle.title}>Форма для запису</h2>
-            <input type="text" name="name" placeholder="Ваше ім'я" value={formData.name} onChange={handleNameChange} />
-            <input
-              type="tel"
-              name="phone"
-              placeholder="+380XXXXXXXXX"
-              value={formData.phone}
-              onChange={handlePhoneChange}
-            />
-            <label>
-              Дата:
-              <input type="date" name="date" min={minAvailableDate} value={formData.date} onChange={handleDateChange} />
-            </label>
-            <label>
-              Час:
+            <div className={modalStyle.inputContainer}>
+              <img src={userIcon} alt="user icon" />
               <input
-                type="time"
-                name="time"
-                min="09:00"
-                max="18:30"
-                value={formData.time}
-                onChange={handleTimeChange}
+                type="text"
+                name="name"
+                placeholder="Ваше ім'я"
+                value={formData.name}
+                onChange={handleNameChange}
               />
-            </label>
+            </div>
+            <div className={modalStyle.inputContainer}>
+              <img src={telephoneIcon} alt="telephone icon" />
+              <input
+                type="tel"
+                name="phone"
+                placeholder="+380XXXXXXXXX"
+                value={formData.phone}
+                onChange={handlePhoneChange}
+              />
+            </div>
+            <div className={modalStyle.infoBlocks}>
+              <label className={modalStyle.inputContainer}>
+                <img src={calendarIcon} alt="calendar icon" />
+                Дата:
+                <input
+                  type="date"
+                  name="date"
+                  min={minAvailableDate}
+                  value={formData.date}
+                  onChange={handleDateChange}
+                />
+              </label>
+              <label className={modalStyle.inputContainer}>
+                <img src={scheduleIcon} alt="schedule icon" />
+                Час:
+                <input
+                  type="time"
+                  name="time"
+                  min="09:00"
+                  max="18:30"
+                  value={formData.time}
+                  onChange={handleTimeChange}
+                />
+              </label>
+            </div>
             <button type="submit" className={modalStyle.submitBtn}>
               Підтвердити запис
             </button>

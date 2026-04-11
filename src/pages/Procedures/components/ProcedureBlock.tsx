@@ -27,9 +27,7 @@ export function ProcedureBlock({ procedure }: props): JSX.Element {
           className={buttonStyle.moreDetails}
           onClick={handleClick}
         >
-          {/* <button className={buttonStyle.moreDetails} onClick={handleClick}> */}
           Детальніше
-          {/* </button> */}
         </Link>
       </div>
     </div>
