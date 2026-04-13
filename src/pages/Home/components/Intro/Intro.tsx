@@ -40,7 +40,7 @@ export function Intro(): JSX.Element {
         <p className={introStyle.text}>Косметологічна клініка</p>
         <h1 className={introStyle.head}>Beauty Zone</h1>
         <button onClick={() => openModalWindow(true)} className={introStyle.infoButton}>
-          Замовити дзвінок
+          Наші контакти
         </button>
         <p className={introStyle.labelForButton}>
           Запишись та отримай безкоштовну

@@ -1,6 +1,7 @@
 import type { JSX } from 'react';
 import contactsStyle from './contacts.module.scss';
 import mapPicture from '../../../../assets/HomePage/contacts/map.webp';
+import { ContactCards } from '../../../../components/ContactCards';
 
 export function Contacts(): JSX.Element {
   return (
@@ -17,24 +18,7 @@ export function Contacts(): JSX.Element {
           >
             <img src={mapPicture} alt="map" />
           </a>
-          <form action="" className={`${contactsStyle.form} ${contactsStyle.scrollStyled}`}>
-            <p className={contactsStyle.label}>
-              Запишіться <span className="bold-blue">безкоштовно</span>
-              <br />
-              та отримайте подарунок
-            </p>
-            <input type="text" id="firstName" name="firstName" placeholder="Ваше ім'я та прізвище" />
-            <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Ваш номер телефону" />
-            <input type="text" id="email" name="email" placeholder="Ваша електронна пошта" />
-            <button type="button" className={contactsStyle.buttonSubmit}>
-              Записатись безкоштовно
-            </button>
-            <p className={contactsStyle.agreement}>
-              Натискаючи на кнопку я погоджуюсь
-              <br />
-              <a href="">з політикою конфіденційності</a>
-            </p>
-          </form>
+          <ContactCards />
         </div>
       </div>
     </section>

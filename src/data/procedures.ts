@@ -97,7 +97,7 @@ export const procedures: IProcedure[] = [
     description:
       'Додавання довжини та густоти вій. Природний та виразний погляд на кілька тижнів без необхідності використовувати туш.',
     price: 700,
-    duration: '120 хв',
+    duration: '60 хв',
     category: "Б'юті-послуги",
     imgUrl: eyelashExtension,
   },
@@ -107,7 +107,7 @@ export const procedures: IProcedure[] = [
     description:
       'Комплексний догляд за руками: апаратний або комбінований манікюр, легкий пілінг та стійке покриття гель-лаком.',
     price: 550,
-    duration: '120 хв',
+    duration: '60 хв',
     category: 'Нігтьовий сервіс',
     imgUrl: spaManicure,
   },
@@ -116,7 +116,7 @@ export const procedures: IProcedure[] = [
     title: 'Апаратний педикюр',
     description: 'Безпечна обробка стоп та нігтів, видалення огрубілої шкіри, масаж ніг та нанесення живильного крему.',
     price: 750,
-    duration: '90 хв',
+    duration: '60 хв',
     category: 'Нігтьовий сервіс',
     imgUrl: pedicure,
   },
@@ -160,3 +160,5 @@ export const procedures: IProcedure[] = [
     imgUrl: clayMask,
   },
 ];
+
+export const timeSlots = ['09:00', '10:15', '11:30', '12:45', '14:00', '15:15', '16:30', '17:45', '19:00'];

@@ -130,7 +130,8 @@
   padding: 10px 0;
   gap: 5px;
 
-  input {
+  input,
+  select {
     flex-grow: 1;
     border: none;
     outline: none;
@@ -185,8 +186,11 @@
 }
 
 @media screen and (max-width: 480px) {
-  .infoBlocks {
-    flex-direction: column;
-    gap: 10px;
+  // .infoBlocks {
+  //   flex-direction: column;
+  //   gap: 10px;
+  // }
+  .content {
+    overflow-x: auto;
   }
 }

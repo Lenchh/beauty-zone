@@ -10,6 +10,7 @@ import priceIcon from '../../../assets/ProcedurePage/price.svg';
 import userIcon from '../../../assets/ProcedurePage/user.svg';
 import telephoneIcon from '../../../assets/ProcedurePage/telephone.svg';
 import calendarIcon from '../../../assets/ProcedurePage/calendar.svg';
+import { timeSlots } from '../../../data/procedures';
 
 export function ModalWindow(): JSX.Element {
   const getMinDate = () => {
@@ -77,14 +78,9 @@ export function ModalWindow(): JSX.Element {
     }
   };
 
-  const handleTimeChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleTimeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const selectedTime = e.target.value;
-    if (selectedTime < '09:00' || selectedTime > '18:30') {
-      toastrInfo('Салон Beauty Zone працює з 09:00 до 19:00.', 'Будь ласка, оберіть робочий час.');
-      setFormData({ ...formData, time: '' });
-    } else {
-      setFormData({ ...formData, time: selectedTime });
-    }
+    setFormData({ ...formData, time: selectedTime });
   };
 
   return (
@@ -123,6 +119,9 @@ export function ModalWindow(): JSX.Element {
               if (!formData.name || !formData.phone || !formData.date || !formData.time) {
                 toastrInfo('Будь ласка, заповніть всі поля!', 'Всі поля мають бути заповнені.');
                 return;
+              } else if (formData.time.length < 9 || formData.name.length === 1) {
+                toastrInfo('Всі поля мають бути заповнені правильно.', 'Будь ласка, введіть коректні дані!');
+                return;
               } else {
                 const orderData = {
                   procedureId: currentProcedure?.id,
@@ -149,12 +148,14 @@ export function ModalWindow(): JSX.Element {
             </div>
             <div className={modalStyle.inputContainer}>
               <img src={telephoneIcon} alt="telephone icon" />
+              <span className={modalStyle.prefix}>+380</span>
               <input
                 type="tel"
                 name="phone"
-                placeholder="+380XXXXXXXXX"
+                placeholder="XX XXX XX XX"
                 value={formData.phone}
                 onChange={handlePhoneChange}
+                maxLength={9}
               />
             </div>
             <div className={modalStyle.infoBlocks}>
@@ -172,14 +173,16 @@ export function ModalWindow(): JSX.Element {
               <label className={modalStyle.inputContainer}>
                 <img src={scheduleIcon} alt="schedule icon" />
                 Час:
-                <input
-                  type="time"
-                  name="time"
-                  min="09:00"
-                  max="18:30"
-                  value={formData.time}
-                  onChange={handleTimeChange}
-                />
+                <select name="time" value={formData.time} onChange={handleTimeChange}>
+                  <option value="" disabled>
+                    Оберіть час
+                  </option>
+                  {timeSlots.map((element) => (
+                    <option value={element} key={element}>
+                      {element}
+                    </option>
+                  ))}
+                </select>
               </label>
             </div>
             <button type="submit" className={modalStyle.submitBtn}>
