@@ -186,10 +186,14 @@
 }
 
 @media screen and (max-width: 480px) {
-  // .infoBlocks {
-  //   flex-direction: column;
-  //   gap: 10px;
-  // }
+  .infoBlocks {
+    flex-direction: column;
+    gap: 10px;
+
+    label {
+      width: 90%;
+    }
+  }
   .content {
     overflow-x: auto;
   }
