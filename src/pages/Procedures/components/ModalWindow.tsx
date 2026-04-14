@@ -119,7 +119,7 @@ export function ModalWindow(): JSX.Element {
               if (!formData.name || !formData.phone || !formData.date || !formData.time) {
                 toastrInfo('Будь ласка, заповніть всі поля!', 'Всі поля мають бути заповнені.');
                 return;
-              } else if (formData.time.length < 9 || formData.name.length === 1) {
+              } else if (formData.phone.length < 9 || formData.name.length === 1) {
                 toastrInfo('Всі поля мають бути заповнені правильно.', 'Будь ласка, введіть коректні дані!');
                 return;
               } else {

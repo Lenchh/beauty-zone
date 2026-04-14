@@ -1,17 +1,17 @@
 import type { JSX } from 'react';
-import modalWindowStyle from '../pages/Home/components/Intro/ModalWindowIntro/modalWindowIntro.module.scss';
-import scheduleIcon from '../assets/HomePage/intro/schedule.svg';
-import calendarIcon from '../assets/HomePage/intro/calendar.svg';
-import locationIcon from '../assets/HomePage/intro/location.svg';
-import instagramIcon from '../assets/HomePage/intro/instagram.svg';
-import facebookIcon from '../assets/HomePage/intro/facebook.svg';
-import telephoneIcon from '../assets/HomePage/intro/telephone.svg';
+import modalWindowStyle from './contactCard.module.scss';
+import scheduleIcon from '../../../assets/HomePage/intro/schedule.svg';
+import calendarIcon from '../../../assets/HomePage/intro/calendar.svg';
+import locationIcon from '../../../assets/HomePage/intro/location.svg';
+import instagramIcon from '../../../assets/HomePage/intro/instagram.svg';
+import facebookIcon from '../../../assets/HomePage/intro/facebook.svg';
+import telephoneIcon from '../../../assets/HomePage/intro/telephone.svg';
 
 interface props {
   onClose?: () => void;
 }
 
-export function ContactCards({ onClose }: props): JSX.Element {
+export function ContactCard({ onClose }: props): JSX.Element {
   const getLinkClass = onClose
     ? `${modalWindowStyle.modalContent} ${modalWindowStyle.scrollStyled}`
     : `${modalWindowStyle.blockContacts} ${modalWindowStyle.scrollStyled}`;

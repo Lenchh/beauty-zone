@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type JSX } from 'react';
-import { Header } from '../Home/components/Header/Header';
+import { Header } from '../../common/components/Header/Header';
 import aboutStyle from './about.module.scss';
 import gameIcon from '../../assets/HomePage/services/game-icons.svg';
 import serviceIcon from '../../assets/HomePage/services/services.svg';
@@ -12,11 +12,11 @@ import blueCertificate from '../../assets/AboutPage/awards/Blue Certificate.webp
 import whiteCertificate from '../../assets/AboutPage/awards/Certificate.webp';
 import goldDiploma from '../../assets/AboutPage/awards/White and Gold Diploma.webp';
 import whiteDiploma from '../../assets/AboutPage/awards/Diploma.webp';
-import { CardService } from '../Home/components/Services/Components/CardService';
+import { CardService } from '../../common/components/ServiceCard/CardService';
 import { CertificateModal } from './Components/CertificateModal/CertificateModal';
 import { specialists } from '../../data/specialists';
 import { CardSpecialist } from './Components/CardSpecialist/CardSpecialist';
-import { Footer } from '../Home/components/Footer/Footer';
+import { Footer } from '../../common/components/Footer/Footer';
 
 export function AboutPage(): JSX.Element {
   const [selectedAward, setSelectedAward] = useState<string | null>(null);

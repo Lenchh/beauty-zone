@@ -1,0 +1,112 @@
+.modalContent,
+.blockContacts {
+  width: 60%;
+  max-width: 723px;
+  max-height: 90%;
+  position: relative;
+  border-radius: 32px;
+  background-color: var(--primary-color);
+  background-image: url('../../../assets//HomePage//contacts//backgroundForm.png');
+  padding: 48px 30px;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  overflow-y: auto;
+}
+
+.close {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  width: 35px;
+  height: 35px;
+  color: white;
+  font-size: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  border: 0;
+  border-radius: 50%;
+  padding: 0;
+  background-color: transparent;
+
+  &:hover {
+    border: 2px solid white;
+  }
+}
+
+.contacts {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.block {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  align-items: center;
+
+  a,
+  p {
+    color: white;
+    font-size: var(--font-size-text);
+    font-weight: bold;
+  }
+
+  a {
+    text-shadow: 0px 0px 20px var(--bg-color);
+    transition: transform 0.4s;
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  span {
+    color: var(--color-text-muted);
+  }
+
+  img {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.divider {
+  width: 1px;
+  background-color: var(--color-text-muted);
+}
+
+.scrollStyled {
+  scrollbar-color: #1862d1c8 #f1f1f100;
+  scrollbar-width: thin;
+}
+
+.blockContacts {
+  width: 85%;
+  max-height: 281px;
+
+  @media screen and (max-width: 768px) {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 639px) {
+  .modalContent {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .modalContent,
+  .blockContacts {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .contacts {
+    width: 90%;
+    gap: 20px;
+  }
+}

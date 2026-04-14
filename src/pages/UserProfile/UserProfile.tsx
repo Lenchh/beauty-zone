@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { Header } from '../Home/components/Header/Header';
+import { Header } from '../../common/components/Header/Header';
 import profileStyle from './userProfile.module.scss';
 
 export function UserProfile(): JSX.Element {

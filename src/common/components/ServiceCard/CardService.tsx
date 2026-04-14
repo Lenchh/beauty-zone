@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import servicesStyle from '../services.module.scss';
+import servicesStyle from './serviceCard.module.scss';
 
 interface props {
   description: string;

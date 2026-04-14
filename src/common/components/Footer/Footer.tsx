@@ -1,10 +1,10 @@
 import type { JSX } from 'react';
 import { NavLink } from 'react-router-dom';
 import footerStyle from './footer.module.scss';
-import phoneIcon from '../../../../assets/HomePage/footer/telephone.svg';
-import facebookIcon from '../../../../assets/HomePage/footer/facebook.svg';
-import instagramIcon from '../../../../assets/HomePage/footer/instagram.svg';
-import pictureFooter from '../../../../assets/HomePage/footer/footer.webp';
+import phoneIcon from '../../../assets/HomePage/footer/telephone.svg';
+import facebookIcon from '../../../assets/HomePage/footer/facebook.svg';
+import instagramIcon from '../../../assets/HomePage/footer/instagram.svg';
+import pictureFooter from '../../../assets/HomePage/footer/footer.webp';
 
 export function Footer(): JSX.Element {
   return (

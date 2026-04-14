@@ -1,10 +1,10 @@
 import { useEffect, useState, type JSX } from 'react';
 import { NavLink } from 'react-router-dom';
 import headerStyle from './header.module.scss';
-import phoneIcon from '../../../../assets/HomePage/header/telephone.svg';
-import facebookIcon from '../../../../assets/HomePage/header/facebook.svg';
-import instagramIcon from '../../../../assets/HomePage/header/instagram.svg';
-import menuIcon from '../../../../assets/HomePage/header/menu.svg';
+import phoneIcon from '../../../assets/HomePage/header/telephone.svg';
+import facebookIcon from '../../../assets/HomePage/header/facebook.svg';
+import instagramIcon from '../../../assets/HomePage/header/instagram.svg';
+import menuIcon from '../../../assets/HomePage/header/menu.svg';
 import { ModalWindowHead } from './ModalWindowHead/ModalWindowHead';
 
 export function Header(): JSX.Element {

@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState, type JSX } from 'react';
-import { Header } from '../Home/components/Header/Header';
+import { Header } from '../../common/components/Header/Header';
 import proceduresStyle from './procedures.module.scss';
 import { procedures, type IProcedure } from '../../data/procedures';
-import { ProcedureBlock } from './components/ProcedureBlock';
-import { Footer } from '../Home/components/Footer/Footer';
+import { Footer } from '../../common/components/Footer/Footer';
 import { ModalWindow } from './components/ModalWindow';
 import { useAppDispatch, useAppSelector } from '../../featchers/hooks';
 import { useParams } from 'react-router-dom';
 import { openModal } from '../../featchers/slices/modalSlice';
+import { ProcedureBlock } from './components/ProcedureBlock';
 
 export function ProceduresPage(): JSX.Element {
   const dispatch = useAppDispatch();

@@ -5,7 +5,7 @@ import gameIcon from '../../../../assets/HomePage/services/game-icons.svg';
 import serviceIcon from '../../../../assets/HomePage/services/services.svg';
 import crownIcon from '../../../../assets/HomePage/services/crown-icons.svg';
 import { Link } from 'react-router-dom';
-import { CardService } from './Components/CardService';
+import { CardService } from '../../../../common/components/ServiceCard/CardService';
 
 export function Services(): JSX.Element {
   const cardsServices = [

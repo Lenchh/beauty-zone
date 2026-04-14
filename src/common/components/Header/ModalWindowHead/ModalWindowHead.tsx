@@ -2,9 +2,9 @@ import type { JSX } from 'react';
 import { NavLink } from 'react-router-dom';
 import windowHeadStyle from './modalWindowHead.module.scss';
 import headerStyle from '../header.module.scss';
-import phoneIcon from '../../../../../assets/HomePage/header/telephone.svg';
-import facebookIcon from '../../../../../assets/HomePage/header/facebook.svg';
-import instagramIcon from '../../../../../assets/HomePage/header/instagram.svg';
+import phoneIcon from '../../../../assets/HomePage/header/telephone.svg';
+import facebookIcon from '../../../../assets/HomePage/header/facebook.svg';
+import instagramIcon from '../../../../assets/HomePage/header/instagram.svg';
 
 interface props {
   openModalWindow: React.Dispatch<React.SetStateAction<boolean>>;

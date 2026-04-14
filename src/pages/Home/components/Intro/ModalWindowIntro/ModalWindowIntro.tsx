@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 import modalWindowStyle from './modalWindowIntro.module.scss';
-import { ContactCards } from '../../../../../components/ContactCards';
+import { ContactCard } from '../../../../../common/components/ContactCard/ContactCard';
 
 interface props {
   openModalWindow: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,7 +13,7 @@ export function ModalWindowIntro({ openModalWindow }: props): JSX.Element {
 
   return (
     <div className={modalWindowStyle.modalWindow} onClick={clickToClose}>
-      <ContactCards onClose={() => openModalWindow(false)} />
+      <ContactCard onClose={() => openModalWindow(false)} />
     </div>
   );
 }
