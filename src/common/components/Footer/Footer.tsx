@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import footerStyle from './footer.module.scss';
 import phoneIcon from '../../../assets/HomePage/footer/telephone.svg';
 import facebookIcon from '../../../assets/HomePage/footer/facebook.svg';
@@ -10,10 +10,12 @@ export function Footer(): JSX.Element {
   return (
     <footer className={footerStyle.footer}>
       <div className={footerStyle.container}>
-        <h2 className="bold-blue">
-          Beauty
-          <br />
-          Zone
+        <h2>
+          <Link to={'/'} className="bold-blue">
+            Beauty
+            <br />
+            Zone
+          </Link>
         </h2>
         <ul className={`${footerStyle.block} ${footerStyle.rightSide}`}>
           <li>
@@ -42,7 +44,7 @@ export function Footer(): JSX.Element {
               >
                 Україна, м. Київ,
                 <br />
-                вул. Тараса Шевченка 5
+                вул. Тараса Шевченка, 5
               </a>
             </li>
           </ul>
@@ -66,9 +68,9 @@ export function Footer(): JSX.Element {
         </div>
         <div className={`${footerStyle.block} ${footerStyle.rightSide}`}>
           <p className={footerStyle.privacyPolicy}>Політика конфіденційності</p>
-          <p className={footerStyle.protectedData}>© 2022 Дані захищені</p>
+          <p className={footerStyle.protectedData}>© 2026 Дані захищені</p>
         </div>
-        <p className={footerStyle.protectedDataHidden}>© 2022 Дані захищені</p>
+        <p className={footerStyle.protectedDataHidden}>© 2026 Дані захищені</p>
       </div>
       <img src={pictureFooter} alt="photo footer" className={footerStyle.imgFooter} />
     </footer>

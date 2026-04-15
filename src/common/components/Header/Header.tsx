@@ -1,5 +1,5 @@
 import { useEffect, useState, type JSX } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import headerStyle from './header.module.scss';
 import phoneIcon from '../../../assets/HomePage/header/telephone.svg';
 import facebookIcon from '../../../assets/HomePage/header/facebook.svg';
@@ -46,10 +46,12 @@ export function Header(): JSX.Element {
     <>
       <header className={headerStyle.header}>
         <div className={headerStyle.info}>
-          <h2 className="bold-blue">
-            Beauty
-            <br />
-            Zone
+          <h2>
+            <Link to={'/'} className="bold-blue">
+              Beauty
+              <br />
+              Zone
+            </Link>
           </h2>
           <ul className={headerStyle.listInfo}>
             <li>

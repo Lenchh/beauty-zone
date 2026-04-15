@@ -43,7 +43,7 @@ export function ContactCard({ onClose }: props): JSX.Element {
           <p>
             Адреса
             <br />
-            <span>вул. Шевченка, 27</span>
+            <span>вул. Шевченка, 5</span>
           </p>
         </div>
       </div>
