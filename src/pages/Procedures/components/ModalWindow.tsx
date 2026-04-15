@@ -25,6 +25,7 @@ export function ModalWindow(): JSX.Element {
   const currentProcedure = useAppSelector((state) => state.modal.procedure);
   const [formData, setFormData] = useState({
     name: '',
+    surname: '',
     phone: '',
     date: '',
     time: '',
@@ -116,10 +117,10 @@ export function ModalWindow(): JSX.Element {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              if (!formData.name || !formData.phone || !formData.date || !formData.time) {
+              if (!formData.name || !formData.surname || !formData.phone || !formData.date || !formData.time) {
                 toastrInfo('Будь ласка, заповніть всі поля!', 'Всі поля мають бути заповнені.');
                 return;
-              } else if (formData.phone.length < 9 || formData.name.length === 1) {
+              } else if (formData.phone.length < 9 || formData.name.length === 1 || formData.surname.length === 1) {
                 toastrInfo('Всі поля мають бути заповнені правильно.', 'Будь ласка, введіть коректні дані!');
                 return;
               } else {
@@ -143,6 +144,16 @@ export function ModalWindow(): JSX.Element {
                 name="name"
                 placeholder="Ваше ім'я"
                 value={formData.name}
+                onChange={handleNameChange}
+              />
+            </div>
+            <div className={modalStyle.inputContainer}>
+              <img src={userIcon} alt="user icon" />
+              <input
+                type="text"
+                name="surname"
+                placeholder="Ваше прізвище"
+                value={formData.surname}
                 onChange={handleNameChange}
               />
             </div>
