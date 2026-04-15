@@ -79,7 +79,7 @@
 
 @media screen and (max-width: 768px) {
   .intro {
-    background-image: url('../../../../assets/HomePage/intro/backgroundFor768px.webp');
+    background-image: url('../../../../assets/HomePage/intro/background768px.webp');
     background-position: right top;
     height: 370px;
     padding-top: 100px;
@@ -104,7 +104,7 @@
   .intro {
     background-image:
       linear-gradient(to bottom, transparent 70%, #ffffff 100%),
-      url('../../../../assets/HomePage/intro/backgroundFor768px.webp');
+      url('../../../../assets/HomePage/intro/background768px.webp');
     background-size: cover;
     background-position: right top;
   }
