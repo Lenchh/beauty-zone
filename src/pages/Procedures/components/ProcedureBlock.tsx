@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 import { useAppDispatch } from '../../../featchers/hooks';
-import type { IProcedure } from '../../../data/procedures';
+import type { IProcedure } from '../../../common/interfaces/IProcedure';
 import procedureStyle from '../../AboutPage/Components/CardSpecialist/cardSpecialist.module.scss';
 import buttonStyle from '../procedures.module.scss';
 import { openModal } from '../../../featchers/slices/modalSlice';

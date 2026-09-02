@@ -1,9 +1,10 @@
 import type { JSX } from 'react';
 import modalStyle from './modalAward.module.scss';
+import type { ICertificate } from '../../../../common/interfaces/ICertificate';
 
 interface props {
-  certificate: string;
-  setSelectedAward: React.Dispatch<React.SetStateAction<string | null>>;
+  certificate: ICertificate;
+  setSelectedAward: React.Dispatch<React.SetStateAction<ICertificate | null>>;
 }
 
 export function CertificateModal({ certificate, setSelectedAward }: props): JSX.Element {
@@ -16,7 +17,7 @@ export function CertificateModal({ certificate, setSelectedAward }: props): JSX.
         <button type="button" className={modalStyle.close} onClick={() => setSelectedAward(null)}>
           &times;
         </button>
-        <img src={certificate} alt="award" className={modalStyle.container} />
+        <img src={certificate.imgUrl} alt={certificate.altText} className={modalStyle.container} />
       </div>
     </div>
   );

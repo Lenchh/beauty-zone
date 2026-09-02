@@ -7,19 +7,19 @@ import crownIcon from '../../assets/HomePage/services/crown-icons.svg';
 import shieldIcon from '../../assets/HomePage/services/shieldIcon.svg';
 import personIcon from '../../assets/HomePage/services/personIcon.svg';
 import spaIcon from '../../assets/HomePage/services/spaIcon.svg';
-import goldCertificate from '../../assets/AboutPage/awards/Black and Gold Certificate .webp';
-import blueCertificate from '../../assets/AboutPage/awards/Blue Certificate.webp';
-import whiteCertificate from '../../assets/AboutPage/awards/Certificate.webp';
-import goldDiploma from '../../assets/AboutPage/awards/White and Gold Diploma.webp';
-import whiteDiploma from '../../assets/AboutPage/awards/Diploma.webp';
 import { CardService } from '../../common/components/ServiceCard/CardService';
 import { CertificateModal } from './Components/CertificateModal/CertificateModal';
-import { specialists } from '../../data/specialists';
 import { CardSpecialist } from './Components/CardSpecialist/CardSpecialist';
 import { Footer } from '../../common/components/Footer/Footer';
+import { supabase } from '../../api/supabase';
+import { toastError } from '../../toastr/error/toastr-options-error';
+import type { ISpecialist } from '../../common/interfaces/ISpecialist';
+import type { ICertificate } from '../../common/interfaces/ICertificate';
 
 export function AboutPage(): JSX.Element {
-  const [selectedAward, setSelectedAward] = useState<string | null>(null);
+  const [selectedAward, setSelectedAward] = useState<ICertificate | null>(null);
+  const [specialists, setSpecialists] = useState<ISpecialist[]>();
+  const [certificates, setCertificates] = useState<ICertificate[]>();
 
   const cardsServices = [
     {
@@ -57,6 +57,26 @@ export function AboutPage(): JSX.Element {
     },
   ];
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const [specialistsResult, certificatesResult] = await Promise.all([
+        supabase.from('specialists').select('*'),
+        supabase.from('certificates').select('*'),
+      ]);
+      if (specialistsResult.error) {
+        toastError('Помилка завантаження даних про спеціалістів:', specialistsResult.error.message);
+      } else if (specialistsResult.data) {
+        setSpecialists(specialistsResult.data);
+      }
+      if (certificatesResult.error) {
+        toastError('Помилка завантаження сертифікатів:', certificatesResult.error.message);
+      } else if (certificatesResult.data) {
+        setCertificates(certificatesResult.data);
+      }
+    };
+    fetchData();
+  }, []);
+
   const scrollPosition = useRef(0);
 
   useEffect(() => {
@@ -86,7 +106,6 @@ export function AboutPage(): JSX.Element {
     };
   }, [selectedAward]);
 
-  const awards = [goldCertificate, blueCertificate, whiteCertificate, goldDiploma, whiteDiploma];
   return (
     <div className={aboutStyle.aboutPage}>
       <Header />
@@ -99,13 +118,13 @@ export function AboutPage(): JSX.Element {
         </div>
         <h2>Гарантія якості та безпеки</h2>
         <div className={`${aboutStyle.awardsBlocks} ${aboutStyle.scrollStyled}`}>
-          {awards.map((award, index) => (
+          {certificates?.map((certificate, index) => (
             <img
-              src={award}
-              alt="award"
+              src={certificate.imgUrl}
+              alt={certificate.altText}
               className={aboutStyle.award}
               key={index}
-              onClick={() => setSelectedAward(award)}
+              onClick={() => setSelectedAward(certificate)}
             />
           ))}
         </div>
@@ -113,7 +132,7 @@ export function AboutPage(): JSX.Element {
           Наші <span className="bold-blue">спеціалісти</span>{' '}
         </h2>
         <div className={aboutStyle.benefitsBlocks}>
-          {specialists.map((specialist) => (
+          {specialists?.map((specialist) => (
             <CardSpecialist specialist={specialist} key={specialist.id} />
           ))}
         </div>

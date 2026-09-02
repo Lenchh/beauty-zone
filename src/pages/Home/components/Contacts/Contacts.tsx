@@ -1,7 +1,7 @@
 import type { JSX } from 'react';
-import contactsStyle from './contacts.module.scss';
 import mapPicture from '../../../../assets/HomePage/contacts/map.webp';
 import { ContactCard } from '../../../../common/components/ContactCard/ContactCard';
+import contactsStyle from './contacts.module.scss';
 
 export function Contacts(): JSX.Element {
   return (

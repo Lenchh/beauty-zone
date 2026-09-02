@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState, type JSX } from 'react';
 import { Header } from '../../common/components/Header/Header';
 import proceduresStyle from './procedures.module.scss';
-import { procedures, type IProcedure } from '../../data/procedures';
 import { Footer } from '../../common/components/Footer/Footer';
 import { ModalWindow } from './components/ModalWindow';
 import { useAppDispatch, useAppSelector } from '../../featchers/hooks';
 import { useParams } from 'react-router-dom';
 import { openModal } from '../../featchers/slices/modalSlice';
 import { ProcedureBlock } from './components/ProcedureBlock';
+import type { IProcedure } from '../../common/interfaces/IProcedure';
+import { supabase } from '../../api/supabase';
+import { toastError } from '../../toastr/error/toastr-options-error';
 
 export function ProceduresPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -21,8 +23,21 @@ export function ProceduresPage(): JSX.Element {
     'Волосся',
     'Маски для обличчя',
   ];
-
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const [procedures, setProcedures] = useState<IProcedure[]>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data, error } = await supabase.from('procedures').select('*');
+      if (error) {
+        toastError('Помилка завантаження процедур:', error.message);
+      }
+      if (data) {
+        setProcedures(data);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleChange = (category: string) => {
     if (selectedFilters.includes(category)) setSelectedFilters(selectedFilters.filter((item) => item !== category));
@@ -62,14 +77,14 @@ export function ProceduresPage(): JSX.Element {
 
   useEffect(() => {
     if (procedureId) {
-      const foundProcedure: IProcedure | undefined = procedures.find(
+      const foundProcedure: IProcedure | undefined = procedures?.find(
         (procedure) => String(procedure.id) === procedureId
       );
       if (foundProcedure) {
         dispatch(openModal(foundProcedure));
       }
     }
-  }, [dispatch, procedureId]);
+  }, [dispatch, procedureId, procedures]);
 
   return (
     <div className={proceduresStyle.proceduresPage}>
@@ -96,9 +111,9 @@ export function ProceduresPage(): JSX.Element {
           <div className={proceduresStyle.procedures}>
             {selectedFilters.length > 0
               ? procedures
-                  .filter((procedure) => selectedFilters.includes(procedure.category))
+                  ?.filter((procedure) => selectedFilters.includes(procedure.category))
                   .map((procedure) => <ProcedureBlock procedure={procedure} key={procedure.id} />)
-              : procedures.map((procedure) => <ProcedureBlock procedure={procedure} key={procedure.id} />)}
+              : procedures?.map((procedure) => <ProcedureBlock procedure={procedure} key={procedure.id} />)}
           </div>
         </div>
       </div>

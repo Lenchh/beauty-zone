@@ -2,7 +2,7 @@ import toastr from 'toastr';
 import 'toastr/build/toastr.min.css';
 import './style-toastr-info.css';
 
-export function toastrInfo(description: string, headString: string): void {
+export function toastInfo(description: string, headString: string): void {
   toastr.options = {
     closeButton: true,
     debug: false,

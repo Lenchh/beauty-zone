@@ -65,10 +65,10 @@
 }
 
 @media screen and (max-width: 768px) {
-  .container {
-    gap: 24px;
-  }
   .benefitsBlocks > * {
     width: 100%;
+  }
+  .container {
+    gap: 24px;
   }
 }

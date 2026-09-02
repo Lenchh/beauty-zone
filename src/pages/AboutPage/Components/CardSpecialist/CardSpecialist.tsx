@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import type { ISpecialist } from '../../../../data/specialists';
+import type { ISpecialist } from '../../../../common/interfaces/ISpecialist';
 import specialistStyle from './cardSpecialist.module.scss';
 
 interface props {

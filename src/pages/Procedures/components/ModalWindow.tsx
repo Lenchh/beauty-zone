@@ -3,14 +3,13 @@ import { useAppDispatch, useAppSelector } from '../../../featchers/hooks';
 import { closeModal } from '../../../featchers/slices/modalSlice';
 import { useNavigate } from 'react-router-dom';
 import modalStyle from './modalWindow.module.scss';
-import { toastrSuccess } from '../../../toastr/success/toastr-options-success';
-import { toastrInfo } from '../../../toastr/info/toastr-options-info';
+import { toastSuccess } from '../../../toastr/success/toastr-options-success';
+import { toastInfo } from '../../../toastr/info/toastr-options-info';
 import scheduleIcon from '../../../assets/ProcedurePage/schedule.svg';
 import priceIcon from '../../../assets/ProcedurePage/price.svg';
 import userIcon from '../../../assets/ProcedurePage/user.svg';
 import telephoneIcon from '../../../assets/ProcedurePage/telephone.svg';
 import calendarIcon from '../../../assets/ProcedurePage/calendar.svg';
-import { timeSlots } from '../../../data/procedures';
 
 export function ModalWindow(): JSX.Element {
   const getMinDate = () => {
@@ -21,6 +20,7 @@ export function ModalWindow(): JSX.Element {
   const minAvailableDate = getMinDate();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const isOpen = useAppSelector((state) => state.modal.isOpen);
   const currentProcedure = useAppSelector((state) => state.modal.procedure);
   const [formData, setFormData] = useState({
@@ -30,6 +30,7 @@ export function ModalWindow(): JSX.Element {
     date: '',
     time: '',
   });
+  const timeSlots = ['09:00', '10:15', '11:30', '12:45', '14:00', '15:15', '16:30', '17:45', '19:00'];
 
   const closeWindow = () => {
     dispatch(closeModal());
@@ -64,7 +65,7 @@ export function ModalWindow(): JSX.Element {
   const handleDateChange = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedDateString = e.target.value;
     if (selectedDateString < minAvailableDate) {
-      toastrInfo('Ця дата недоступна.', 'Будь ласка, оберіть дату в майбутньому.');
+      toastInfo('Ця дата недоступна.', 'Будь ласка, оберіть дату в майбутньому.');
       setFormData({ ...formData, date: '' });
       return;
     }
@@ -72,7 +73,7 @@ export function ModalWindow(): JSX.Element {
     const dayOfWeek = dateObject.getDay();
 
     if (dayOfWeek === 0 || dayOfWeek === 6) {
-      toastrInfo('Вибачте, салон Beauty Zone не працює у вихідні дні.', 'Будь ласка, оберіть будній день.');
+      toastInfo('Вибачте, салон Beauty Zone не працює у вихідні дні.', 'Будь ласка, оберіть будній день.');
       setFormData({ ...formData, date: '' });
     } else {
       setFormData({ ...formData, date: selectedDateString });
@@ -117,11 +118,12 @@ export function ModalWindow(): JSX.Element {
           <form
             onSubmit={(e) => {
               e.preventDefault();
+              setIsSubmitted(true);
               if (!formData.name || !formData.surname || !formData.phone || !formData.date || !formData.time) {
-                toastrInfo('Будь ласка, заповніть всі поля!', 'Всі поля мають бути заповнені.');
+                toastInfo('Будь ласка, заповніть всі поля!', 'Всі поля мають бути заповнені.');
                 return;
               } else if (formData.phone.length < 9 || formData.name.length === 1 || formData.surname.length === 1) {
-                toastrInfo('Всі поля мають бути заповнені правильно.', 'Будь ласка, введіть коректні дані!');
+                toastInfo('Всі поля мають бути заповнені правильно.', 'Будь ласка, введіть коректні дані!');
                 return;
               } else {
                 const orderData = {
@@ -130,14 +132,17 @@ export function ModalWindow(): JSX.Element {
                   customer: formData,
                 };
                 console.log('Новий запис: ', orderData);
-                toastrSuccess(`Дякуємо, ${formData.name}!`, 'Ваша заявка успішно прийнята.');
+                toastSuccess(`Дякуємо, ${formData.name}!`, 'Ваша заявка успішно прийнята.');
                 closeWindow();
               }
             }}
             className={modalStyle.orderForm}
           >
             <h2 className={modalStyle.title}>Форма для запису</h2>
-            <div className={modalStyle.inputContainer}>
+            <div
+              className={modalStyle.inputContainer}
+              style={isSubmitted && formData.name.length <= 1 ? { borderColor: 'red' } : { borderColor: '#00000033' }}
+            >
               <img src={userIcon} alt="user icon" />
               <input
                 type="text"
@@ -147,7 +152,12 @@ export function ModalWindow(): JSX.Element {
                 onChange={handleNameChange}
               />
             </div>
-            <div className={modalStyle.inputContainer}>
+            <div
+              className={modalStyle.inputContainer}
+              style={
+                isSubmitted && formData.surname.length <= 1 ? { borderColor: 'red' } : { borderColor: '#00000033' }
+              }
+            >
               <img src={userIcon} alt="user icon" />
               <input
                 type="text"
@@ -157,7 +167,10 @@ export function ModalWindow(): JSX.Element {
                 onChange={handleNameChange}
               />
             </div>
-            <div className={modalStyle.inputContainer}>
+            <div
+              className={modalStyle.inputContainer}
+              style={isSubmitted && formData.phone.length < 9 ? { borderColor: 'red' } : { borderColor: '#00000033' }}
+            >
               <img src={telephoneIcon} alt="telephone icon" />
               <span className={modalStyle.prefix}>+380</span>
               <input
@@ -170,7 +183,10 @@ export function ModalWindow(): JSX.Element {
               />
             </div>
             <div className={modalStyle.infoBlocks}>
-              <label className={modalStyle.inputContainer}>
+              <label
+                className={modalStyle.inputContainer}
+                style={isSubmitted && !formData.date ? { borderColor: 'red' } : { borderColor: '#00000033' }}
+              >
                 <img src={calendarIcon} alt="calendar icon" />
                 Дата:
                 <input
@@ -181,7 +197,10 @@ export function ModalWindow(): JSX.Element {
                   onChange={handleDateChange}
                 />
               </label>
-              <label className={modalStyle.inputContainer}>
+              <label
+                className={modalStyle.inputContainer}
+                style={isSubmitted && !formData.time ? { borderColor: 'red' } : { borderColor: '#00000033' }}
+              >
                 <img src={scheduleIcon} alt="schedule icon" />
                 Час:
                 <select name="time" value={formData.time} onChange={handleTimeChange}>

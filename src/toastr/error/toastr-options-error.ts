@@ -2,7 +2,7 @@ import toastr from 'toastr';
 import 'toastr/build/toastr.min.css';
 import './style-toastr-error.css';
 
-export function toastrError(description: string, headString: string): void {
+export function toastError(description: string, headString: string): void {
   toastr.options = {
     closeButton: true,
     debug: false,

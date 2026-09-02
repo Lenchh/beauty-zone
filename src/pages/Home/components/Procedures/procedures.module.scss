@@ -72,29 +72,6 @@
   border-radius: 4px 120px;
 }
 
-// .arrowButton {
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   background-color: transparent;
-//   width: 44px;
-//   height: 44px;
-//   border-radius: 50%;
-//   border: 1px solid var(--primary-color);
-//   padding: 0;
-//   background-image: url('../../../../assets/procedures/arrowRight.svg');
-//   background-repeat: no-repeat;
-//   background-position: center;
-
-//   &:hover {
-//     background-color: var(--primary-color);
-//     cursor: pointer;
-//     background-image: url('../../../../assets/procedures/arrowRightHover.svg');
-//     background-repeat: no-repeat;
-//     background-position: center;
-//   }
-// }
-
 @media screen and (max-width: 1240px) {
   .container {
     width: 100%;
