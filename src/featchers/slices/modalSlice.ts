@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { IProcedure } from '../../data/procedures';
+import type { IProcedure } from '../../common/interfaces/IProcedure';
 
 interface modalState {
   isOpen: boolean;
