@@ -60,6 +60,25 @@
   }
 }
 
+.buttonToLogin {
+  align-self: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: var(--font-size-text);
+  background-color: var(--secondary-color);
+  color: var(--bg-color);
+  border: none;
+  border-radius: 32px;
+  width: 100px;
+  height: 40px;
+  transition: transform 0.4s;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
 .menu {
   display: none;
 }
@@ -87,6 +106,10 @@
     li {
       display: none;
     }
+
+    .buttonToLogin {
+      display: none;
+    }
   }
 
   .info {
@@ -98,5 +121,9 @@
     background-color: transparent;
     padding: 5px;
     border: none;
+  }
+
+  .buttonToLogin {
+    align-self: auto;
   }
 }

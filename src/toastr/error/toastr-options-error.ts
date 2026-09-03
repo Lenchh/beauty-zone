@@ -19,7 +19,7 @@ export function toastError(description: string, headString: string): void {
     showMethod: 'fadeIn',
     hideMethod: 'fadeOut',
     toastClass: 'style-toast-error',
-    closeHtml: '<button class="closebtn"><i class="bi bi-x"></i></button>',
+    closeHtml: '<button class="closebtn">&times;</button>',
   };
 
   toastr.warning(description, headString);

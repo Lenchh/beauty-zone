@@ -15,6 +15,8 @@ import { supabase } from '../../api/supabase';
 import { toastError } from '../../toastr/error/toastr-options-error';
 import type { ISpecialist } from '../../common/interfaces/ISpecialist';
 import type { ICertificate } from '../../common/interfaces/ICertificate';
+import nProgress from 'nprogress';
+import '../../common/nprogress/nprogress-custom.css';
 
 export function AboutPage(): JSX.Element {
   const [selectedAward, setSelectedAward] = useState<ICertificate | null>(null);
@@ -59,6 +61,7 @@ export function AboutPage(): JSX.Element {
 
   useEffect(() => {
     const fetchData = async () => {
+      nProgress.start();
       const [specialistsResult, certificatesResult] = await Promise.all([
         supabase.from('specialists').select('*'),
         supabase.from('certificates').select('*'),
@@ -73,6 +76,7 @@ export function AboutPage(): JSX.Element {
       } else if (certificatesResult.data) {
         setCertificates(certificatesResult.data);
       }
+      nProgress.done();
     };
     fetchData();
   }, []);

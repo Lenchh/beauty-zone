@@ -10,6 +10,8 @@ import { ProcedureBlock } from './components/ProcedureBlock';
 import type { IProcedure } from '../../common/interfaces/IProcedure';
 import { supabase } from '../../api/supabase';
 import { toastError } from '../../toastr/error/toastr-options-error';
+import nProgress from 'nprogress';
+import '../../common/nprogress/nprogress-custom.css';
 
 export function ProceduresPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -28,6 +30,7 @@ export function ProceduresPage(): JSX.Element {
 
   useEffect(() => {
     const fetchData = async () => {
+      nProgress.start();
       const { data, error } = await supabase.from('procedures').select('*');
       if (error) {
         toastError('Помилка завантаження процедур:', error.message);
@@ -35,6 +38,7 @@ export function ProceduresPage(): JSX.Element {
       if (data) {
         setProcedures(data);
       }
+      nProgress.done();
     };
     fetchData();
   }, []);
