@@ -1,11 +1,13 @@
 import { useState, type ChangeEvent, type JSX } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toastError } from '../../toastr/error/toastr-options-error';
 import { toastSuccess } from '../../toastr/success/toastr-options-success';
 import { validate } from 'email-validator';
 import registerStyle from './registration.module.scss';
 import { toastInfo } from '../../toastr/info/toastr-options-info';
 import homeIcon from '../../assets/LoginPage/homeIcon.svg';
+import nProgress from 'nprogress';
+import { supabase } from '../../api/supabase';
 
 export function Registration(): JSX.Element {
   const [email, setEmail] = useState('');
@@ -14,6 +16,7 @@ export function Registration(): JSX.Element {
   const [surname, setSurname] = useState('');
   const [phone, setPhone] = useState('+380');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const navigate = useNavigate();
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (/^[а-яА-ЯіІїЇєЄґҐ'’-]*$/.test(e.target.value)) {
@@ -37,21 +40,44 @@ export function Registration(): JSX.Element {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     setIsSubmitted(true);
-    if (name.length < 2 || surname.length < 3) {
-      toastError('Перевірте коректність введених імені або прізвища.', 'Некоректні дані');
-    }
-    if (phone.length < 13) {
-      toastError('Перевірте коректність введеного номеру.', 'Некоректні дані');
-    }
-    if (!validate(email)) {
-      toastError('Перевірте коректність введеної електронної пошти.', 'Некоректні дані');
+    if (name.length < 2 || surname.length < 3 || phone.length < 13 || !validate(email)) {
+      toastError('Перевірте коректність введених даних.', 'Некоректні дані');
       return;
     }
     if (password.length < 6) {
       toastInfo('Пароль повинен містити щонайменше 6 символів.', 'Некоректні дані');
       return;
     }
-    toastSuccess('Користувача успішно зареєстровано.', 'Успішна реєстрація');
+    nProgress.start();
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+    if (error) {
+      if (error.message === 'User already registered') {
+        toastError('Користувача вже зареєстровано.', 'Помилка реєстрації');
+      } else {
+        toastError(`Помилка реєстрації ${error.message}`, 'Помилка реєстрації');
+        console.log('Помилка реєстрації', error);
+      }
+    } else if (data.user) {
+      const { error: profileError } = await supabase.from('clients').insert([
+        {
+          id: data.user.id,
+          name,
+          surname,
+          phone,
+        },
+      ]);
+      if (profileError) {
+        toastError(`${profileError.message}`, 'Помилка при збереженні акаунту.');
+        console.log('Помилка при збереженні акаунту.', profileError);
+      } else {
+        toastSuccess('Користувача успішно зареєстровано.', 'Успішна реєстрація');
+        navigate('/');
+      }
+    }
+    nProgress.done();
   };
   return (
     <div className={registerStyle.container}>

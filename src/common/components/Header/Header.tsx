@@ -3,9 +3,28 @@ import { Link, NavLink } from 'react-router-dom';
 import headerStyle from './header.module.scss';
 import menuIcon from '../../../assets/HomePage/header/menu.svg';
 import { ModalWindowHead } from './ModalWindowHead/ModalWindowHead';
+import { supabase } from '../../../api/supabase';
 
 export function Header(): JSX.Element {
   const [modalWindow, openModalWindow] = useState(false);
+  const [isUser, setIsUser] = useState(false);
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data } = await supabase.auth.getUser();
+      setIsUser(!!data.user);
+    };
+    checkUser();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      setIsUser(!!session);
+    });
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
     if (modalWindow) {
@@ -68,9 +87,15 @@ export function Header(): JSX.Element {
               </NavLink>
             </li>
           </ul>
-          <Link to={'/login'} className={headerStyle.buttonToLogin}>
-            Вхід
-          </Link>
+          {isUser ? (
+            <Link to={'/profile'} className={headerStyle.buttonToLogin}>
+              Профіль
+            </Link>
+          ) : (
+            <Link to={'/login'} className={headerStyle.buttonToLogin}>
+              Вхід
+            </Link>
+          )}
           <button className={headerStyle.menu} onClick={() => openModalWindow(true)}>
             <img src={menuIcon} alt="menu" />
           </button>

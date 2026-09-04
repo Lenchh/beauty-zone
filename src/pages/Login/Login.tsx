@@ -1,16 +1,19 @@
 import { useState, type JSX } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toastError } from '../../toastr/error/toastr-options-error';
 import { validate } from 'email-validator';
 import { toastInfo } from '../../toastr/info/toastr-options-info';
 import { toastSuccess } from '../../toastr/success/toastr-options-success';
 import loginStyle from '../Registration/registration.module.scss';
 import homeIcon from '../../assets/LoginPage/homeIcon.svg';
+import nProgress from 'nprogress';
+import { supabase } from '../../api/supabase';
 
 export function Login(): JSX.Element {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
@@ -23,7 +26,22 @@ export function Login(): JSX.Element {
       toastInfo('Введіть коректний пароль.', 'Некоректні дані');
       return;
     }
-    toastSuccess('Користувача успішно авторизовано.', 'Успішна авторизація');
+    nProgress.start();
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) {
+      if (error?.message === 'Invalid login credentials') {
+        toastError('Неправильний логін або пароль.', 'Помилка авторизації');
+      } else {
+        toastError(`Помилка: ${error.message}`, 'Помилка авторизації');
+      }
+    } else {
+      toastSuccess('Вітаємо!', 'Успішна авторизація');
+      navigate('/');
+    }
+    nProgress.done();
   };
   return (
     <div className={loginStyle.container}>

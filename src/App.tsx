@@ -6,6 +6,7 @@ import { AboutPage } from './pages/AboutPage/AboutPage';
 import { ScrollToTop } from './common/components/ScrollToTop/ScrollToTop';
 import { Login } from './pages/Login/Login';
 import { Registration } from './pages/Registration/Registration';
+import { ProfilePage } from './pages/ProfilePage/ProfilePage';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/aboutUs" element={<AboutPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
+        <Route path="/profile" element={<ProfilePage />} />
       </Routes>
       <ScrollToTop />
     </HashRouter>
