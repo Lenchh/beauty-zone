@@ -18,7 +18,7 @@ export function Header(): JSX.Element {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
+    } = supabase.auth.onAuthStateChange((session) => {
       setIsUser(!!session);
     });
     return () => {
