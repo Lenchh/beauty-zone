@@ -8,6 +8,8 @@ import { toastInfo } from '../../toastr/info/toastr-options-info';
 import homeIcon from '../../assets/LoginPage/homeIcon.svg';
 import nProgress from 'nprogress';
 import { supabase } from '../../api/supabase';
+import visibilityIcon from '../../assets/LoginPage/visibility (1).svg';
+import visibilityOffIcon from '../../assets/LoginPage/visibilityOff.svg';
 
 export function Registration(): JSX.Element {
   const [email, setEmail] = useState('');
@@ -16,6 +18,7 @@ export function Registration(): JSX.Element {
   const [surname, setSurname] = useState('');
   const [phone, setPhone] = useState('+380');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -132,15 +135,20 @@ export function Registration(): JSX.Element {
         </div>
         <div className={registerStyle.info}>
           <label htmlFor="password">Пароль:</label>
-          <input
-            type="password"
-            placeholder="Мін. довжина пароля: 6 символів"
-            value={password}
-            onChange={(e): void => setPassword(e.target.value)}
-            style={
-              (password || isSubmitted) && password.length < 6 ? { borderColor: 'red' } : { borderColor: '#2b7fff' }
-            }
-          />
+          <div className={registerStyle.passwordInput}>
+            <input
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Мін. довжина пароля: 6 символів"
+              value={password}
+              onChange={(e): void => setPassword(e.target.value)}
+              style={
+                (password || isSubmitted) && password.length < 6 ? { borderColor: 'red' } : { borderColor: '#2b7fff' }
+              }
+            />
+            <button type="button" onClick={() => setShowPassword(!showPassword)}>
+              <img src={showPassword ? visibilityOffIcon : visibilityIcon} alt="toggle password visibility" />
+            </button>
+          </div>
         </div>
         <button type="submit">Зареєструватися</button>
         <p>
