@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, type JSX } from 'react';
+import { useEffect, useState, type ChangeEvent, type JSX } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../featchers/hooks';
 import { closeModal } from '../../../featchers/slices/modalSlice';
 import { useNavigate } from 'react-router-dom';
@@ -23,14 +23,27 @@ export function ModalWindow(): JSX.Element {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const isOpen = useAppSelector((state) => state.modal.isOpen);
   const currentProcedure = useAppSelector((state) => state.modal.procedure);
+  const userInfo = useAppSelector((state) => state.auth.userInfo);
   const [formData, setFormData] = useState({
-    name: '',
-    surname: '',
-    phone: '',
+    name: userInfo?.name || '',
+    surname: userInfo?.surname || '',
+    phone: userInfo?.phone.slice(4) || '',
     date: '',
     time: '',
   });
   const timeSlots = ['09:00', '10:15', '11:30', '12:45', '14:00', '15:15', '16:30', '17:45', '19:00'];
+
+  useEffect(() => {
+    if (userInfo) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setFormData({
+        ...formData,
+        name: userInfo.name,
+        surname: userInfo.surname,
+        phone: userInfo.phone,
+      });
+    }
+  }, [userInfo]);
 
   const closeWindow = () => {
     dispatch(closeModal());

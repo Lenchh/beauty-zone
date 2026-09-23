@@ -8,8 +8,11 @@ import loginStyle from '../Registration/registration.module.scss';
 import homeIcon from '../../assets/LoginPage/homeIcon.svg';
 import nProgress from 'nprogress';
 import { supabase } from '../../api/supabase';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../featchers/slices/authSlice';
 
 export function Login(): JSX.Element {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -27,7 +30,7 @@ export function Login(): JSX.Element {
       return;
     }
     nProgress.start();
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data: user, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -38,7 +41,26 @@ export function Login(): JSX.Element {
         toastError(`Помилка: ${error.message}`, 'Помилка авторизації');
       }
     } else {
-      toastSuccess('Вітаємо!', 'Успішна авторизація');
+      const { data, error } = await supabase
+        .from('clients')
+        .select('name,surname,phone')
+        .eq('id', user.user.id)
+        .single();
+      if (error) {
+        toastError(`Повідомлення про помилку: ${error.message}`, 'Помилка завантаження даних');
+      } else if (data) {
+        dispatch(
+          setUser({
+            id: user.user.id,
+            name: data.name,
+            surname: data.surname,
+            phone: data.phone,
+            email,
+          })
+        );
+        localStorage.setItem('userId', user.user.id);
+        toastSuccess('Вітаємо!', 'Успішна авторизація');
+      }
       navigate('/');
     }
     nProgress.done();

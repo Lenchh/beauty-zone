@@ -1,32 +1,16 @@
-import { useEffect, useState, type JSX } from 'react';
+import { type JSX } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import windowHeadStyle from './modalWindowHead.module.scss';
 import headerStyle from '../header.module.scss';
-import { supabase } from '../../../../api/supabase';
+import { useAppSelector } from '../../../../featchers/hooks';
 
 interface props {
   openModalWindow: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function ModalWindowHead({ openModalWindow }: props): JSX.Element {
-  const [isUser, setIsUser] = useState(false);
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
 
-  useEffect(() => {
-    const checkUser = async () => {
-      const { data } = await supabase.auth.getUser();
-      setIsUser(!!data.user);
-    };
-    checkUser();
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((session) => {
-      setIsUser(!!session);
-    });
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
   const getLinkClass = ({ isActive }: { isActive: boolean }) =>
     isActive ? `${headerStyle.link} ${headerStyle.active}` : headerStyle.link;
 
@@ -63,8 +47,8 @@ export function ModalWindowHead({ openModalWindow }: props): JSX.Element {
             </li>
           </ul>
         </div>
-        {isUser ? (
-          <Link to={'/profile'} className={headerStyle.buttonToLogin}>
+        {isAuthenticated ? (
+          <Link to={`/profile`} className={headerStyle.buttonToLogin}>
             Профіль
           </Link>
         ) : (

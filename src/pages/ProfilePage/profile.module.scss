@@ -11,6 +11,12 @@
   position: static;
 }
 
+.headerText {
+  color: var(--primary-color);
+  font-size: var(--font-size-head);
+  text-align: center;
+}
+
 .userInfoContainer {
   width: 90%;
   display: flex;
@@ -19,12 +25,6 @@
   align-items: center;
   padding: 15px;
   gap: 45px;
-
-  h2 {
-    color: var(--primary-color);
-    font-size: var(--font-size-head);
-    text-align: center;
-  }
 }
 
 .editInfoContainer {
@@ -78,6 +78,95 @@
   }
 }
 
+.buttonLogOut {
+  font-size: clamp(13px, 2vw, 17px);
+  border-radius: 24px;
+  background-color: var(--secondary-color);
+  color: var(--bg-color);
+  border: 2px solid var(--secondary-color);
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 5px;
+  width: 30%;
+  &:hover {
+    background-color: var(--bg-color);
+    color: var(--secondary-color);
+  }
+}
+
+.historyBookingsTable {
+  width: 75%;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  gap: 45px;
+}
+
+.futureBookings,
+.previousBookings {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 20px;
+
+  h3 {
+    color: var(--bg-color);
+    font-size: var(--font-size-text);
+    text-align: center;
+    background-color: var(--secondary-color);
+    border-radius: 24px;
+    padding: 10px;
+  }
+}
+
+.bookingCard {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  padding: 15px;
+  border: 5px solid var(--secondary-color);
+  border-radius: 12px;
+
+  p {
+    width: 65%;
+    color: var(--primary-color);
+    font-size: clamp(13px, 2vw, 17px);
+  }
+  button {
+    font-size: clamp(13px, 2vw, 17px);
+    border-radius: 24px;
+    background-color: var(--bg-color);
+    color: var(--secondary-color);
+    border: 2px solid var(--secondary-color);
+    cursor: pointer;
+    flex-shrink: 0;
+    padding: 5px;
+    width: 35%;
+    text-align: center;
+    &:hover {
+      color: var(--bg-color);
+      background-color: var(--secondary-color);
+    }
+  }
+}
+
+.previousBookings {
+  h3 {
+    color: var(--primary-color);
+    background-color: rgba(13, 30, 50, 0.17);
+  }
+  .bookingCard {
+    border: 5px solid rgba(13, 30, 50, 0.17);
+
+    p {
+      color: var(--primary-color);
+      width: 95%;
+    }
+  }
+}
+
 @media screen and (max-width: 1024px) {
   .userInfoContainer {
     width: 100%;
@@ -85,11 +174,22 @@
   .editInfoContainer {
     width: 60%;
   }
+
+  .historyBookingsTable {
+    width: 90%;
+  }
 }
 
 @media screen and (max-width: 768px) {
   .editInfoContainer {
     width: 75%;
+  }
+  .historyBookingsTable {
+    gap: 20px;
+  }
+  .futureBookings,
+  .previousBookings {
+    gap: 10px;
   }
 }
 
@@ -97,15 +197,23 @@
   .editInfoContainer {
     width: 90%;
   }
-}
-
-@media screen and (max-width: 450px) {
-  .editInfoContainer {
-    input {
-      width: 60%;
-    }
+  .bookingCard {
+    padding: 10px;
+    flex-direction: column;
+    p,
     button {
-      width: 35%;
+      width: 95%;
     }
   }
 }
+
+// @media screen and (max-width: 450px) {
+//   .editInfoContainer {
+//     input {
+//       width: 60%;
+//     }
+//     button {
+//       width: 35%;
+//     }
+//   }
+// }

@@ -7,19 +7,23 @@ import { toastError } from '../../../toastr/error/toastr-options-error';
 import { toastSuccess } from '../../../toastr/success/toastr-options-success';
 import { toastInfo } from '../../../toastr/info/toastr-options-info';
 import { validate } from 'email-validator';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logOutUser, setUser } from '../../../featchers/slices/authSlice';
 
 interface props {
   userInfo: IUser;
   oldUserInfo: IUser;
   setUserInfo: React.Dispatch<React.SetStateAction<IUser>>;
-  setOldUserInfo: React.Dispatch<React.SetStateAction<IUser>>;
 }
 
-export function EditInfoForm({ userInfo, oldUserInfo, setUserInfo, setOldUserInfo }: props): JSX.Element {
+export function EditInfoForm({ userInfo, oldUserInfo, setUserInfo }: props): JSX.Element {
+  const dispatch = useDispatch();
   const { name, surname, phone, email } = userInfo;
   const [isLoading, setIsLoading] = useState(false);
   const [activeInput, setActiveInput] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const navigate = useNavigate();
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (/^[а-яА-ЯіІїЇєЄґҐ'’-]*$/.test(e.target.value)) {
@@ -67,11 +71,11 @@ export function EditInfoForm({ userInfo, oldUserInfo, setUserInfo, setOldUserInf
       if (error) {
         toastError(`Повідомлення про помилку: ${error.message}`, 'Помилка при збереженні даних');
       } else {
+        dispatch(setUser({ ...oldUserInfo, email: currentValue }));
         toastSuccess('Дані збережено.', 'Дані успішно змінені.');
       }
       setIsLoading(false);
       nProgress.done();
-      setOldUserInfo((prev) => ({ ...prev, [fieldName]: currentValue }));
       return;
     }
     const { error } = await supabase
@@ -81,11 +85,24 @@ export function EditInfoForm({ userInfo, oldUserInfo, setUserInfo, setOldUserInf
     if (error) {
       toastError(`Повідомлення про помилку: ${error.message}`, 'Помилка при збереженні даних');
     } else {
+      dispatch(setUser({ ...oldUserInfo, [fieldName]: currentValue }));
       toastSuccess('Дані збережено.', 'Дані успішно змінені.');
     }
     setIsLoading(false);
     nProgress.done();
-    setOldUserInfo((prev) => ({ ...prev, [fieldName]: currentValue }));
+  };
+
+  const handleLogOut = async () => {
+    nProgress.start();
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      toastError('Помилка при виході з акаунту.', 'Помилка');
+    } else {
+      dispatch(logOutUser());
+      localStorage.removeItem('userId');
+    }
+    nProgress.done();
+    navigate('/');
   };
 
   return (
@@ -101,7 +118,7 @@ export function EditInfoForm({ userInfo, oldUserInfo, setUserInfo, setOldUserInf
           style={isSubmitted && name.length < 2 ? { borderColor: 'red' } : { borderColor: '#2b7fff' }}
         />
         <button type="button" onClick={() => handleSubmit('name')} disabled={isLoading}>
-          {isLoading && activeInput === 'name' ? 'Збереження...' : 'Збереження...'}
+          {isLoading && activeInput === 'name' ? 'Збереження...' : 'Зберегти'}
         </button>
       </div>
       <div className={profileStyle.inputContainer}>
@@ -143,6 +160,9 @@ export function EditInfoForm({ userInfo, oldUserInfo, setUserInfo, setOldUserInf
           {isLoading && activeInput === 'email' ? 'Збереження...' : 'Зберегти'}
         </button>
       </div>
+      <button className={profileStyle.buttonLogOut} onClick={handleLogOut}>
+        Вихід
+      </button>
       {/* <input
         type={showPassword ? 'text' : 'password'}
         placeholder="Мін. довжина пароля: 6 символів"

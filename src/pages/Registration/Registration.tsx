@@ -10,8 +10,11 @@ import nProgress from 'nprogress';
 import { supabase } from '../../api/supabase';
 import visibilityIcon from '../../assets/LoginPage/visibility (1).svg';
 import visibilityOffIcon from '../../assets/LoginPage/visibilityOff.svg';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../featchers/slices/authSlice';
 
 export function Registration(): JSX.Element {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -76,6 +79,16 @@ export function Registration(): JSX.Element {
         toastError(`${profileError.message}`, 'Помилка при збереженні акаунту.');
         console.log('Помилка при збереженні акаунту.', profileError);
       } else {
+        dispatch(
+          setUser({
+            id: data.user.id,
+            name,
+            surname,
+            phone,
+            email,
+          })
+        );
+        localStorage.setItem('userId', data.user.id);
         toastSuccess('Користувача успішно зареєстровано.', 'Успішна реєстрація');
         navigate('/');
       }
