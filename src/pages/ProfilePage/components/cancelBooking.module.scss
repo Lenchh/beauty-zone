@@ -1,0 +1,86 @@
+.modalWindow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #2b80ff48;
+  z-index: 1000;
+}
+
+.modalContent {
+  width: 40%;
+  max-width: 700px;
+  position: relative;
+  border-radius: 12px;
+  border: 3px solid var(--secondary-color);
+  background-color: var(--bg-color);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  p {
+    width: 80%;
+    color: var(--primary-color);
+    font-family: 'Play', sans-serif;
+    font-size: var(--font-size-text);
+  }
+}
+
+.close {
+  width: 35px;
+  height: 35px;
+  color: var(--secondary-color);
+  font-size: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  border: 2px solid var(--secondary-color);
+  border-radius: 50%;
+  padding: 0;
+  background-color: transparent;
+
+  &:hover {
+    border: 3px solid var(--secondary-color);
+  }
+}
+
+.cancelButton {
+  font-size: clamp(13px, 2vw, 17px);
+  border-radius: 24px;
+  background-color: var(--bg-color);
+  color: var(--secondary-color);
+  border: 2px solid var(--secondary-color);
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 5px;
+  width: 45%;
+  text-align: center;
+  align-self: flex-end;
+  &:hover {
+    color: var(--bg-color);
+    background-color: var(--secondary-color);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .modalContent {
+    width: 55%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .modalContent {
+    width: 85%;
+  }
+}

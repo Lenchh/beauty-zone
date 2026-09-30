@@ -163,15 +163,6 @@ export function EditInfoForm({ userInfo, oldUserInfo, setUserInfo }: props): JSX
       <button className={profileStyle.buttonLogOut} onClick={handleLogOut}>
         Вихід
       </button>
-      {/* <input
-        type={showPassword ? 'text' : 'password'}
-        placeholder="Мін. довжина пароля: 6 символів"
-        value={password}
-        onChange={(e): void => setPassword(e.target.value)}
-      />
-      <button type="button" onClick={() => setShowPassword(!showPassword)}>
-        <img src={showPassword ? visibilityOffIcon : visibilityIcon} alt="toggle password visibility" />
-      </button> */}
     </div>
   );
 }

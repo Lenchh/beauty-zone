@@ -10,6 +10,8 @@ import priceIcon from '../../../assets/ProcedurePage/price.svg';
 import userIcon from '../../../assets/ProcedurePage/user.svg';
 import telephoneIcon from '../../../assets/ProcedurePage/telephone.svg';
 import calendarIcon from '../../../assets/ProcedurePage/calendar.svg';
+import { supabase } from '../../../api/supabase';
+import { toastError } from '../../../toastr/error/toastr-options-error';
 
 export function ModalWindow(): JSX.Element {
   const getMinDate = () => {
@@ -32,6 +34,29 @@ export function ModalWindow(): JSX.Element {
     time: '',
   });
   const timeSlots = ['09:00', '10:15', '11:30', '12:45', '14:00', '15:15', '16:30', '17:45', '19:00'];
+  const [bookedTimes, setBookedTimes] = useState<string[]>(timeSlots);
+
+  useEffect(() => {
+    if (!formData.date) {
+      return;
+    }
+    const fetchBookedTimes = async () => {
+      const { data, error } = await supabase
+        .from('bookings')
+        .select('time')
+        .eq('date', formData.date)
+        .eq('procedure_id', currentProcedure?.id)
+        .eq('status', 'active');
+      if (error) {
+        toastError('Помилка завантаження вільного часу', `${error.message}`);
+      } else if (data) {
+        const formattedTimes = data.map((booking) => booking.time.substring(0, 5));
+        const filterTimeSlots = timeSlots.filter((booking) => !formattedTimes.includes(booking));
+        setBookedTimes(filterTimeSlots);
+      }
+    };
+    fetchBookedTimes();
+  }, [formData.date]);
 
   useEffect(() => {
     if (userInfo) {
@@ -40,7 +65,7 @@ export function ModalWindow(): JSX.Element {
         ...formData,
         name: userInfo.name,
         surname: userInfo.surname,
-        phone: userInfo.phone,
+        phone: userInfo.phone.slice(4),
       });
     }
   }, [userInfo]);
@@ -98,6 +123,37 @@ export function ModalWindow(): JSX.Element {
     setFormData({ ...formData, time: selectedTime });
   };
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
+    e.preventDefault();
+    setIsSubmitted(true);
+    if (!formData.name || !formData.surname || !formData.phone || !formData.date || !formData.time) {
+      toastInfo('Будь ласка, заповніть всі поля!', 'Всі поля мають бути заповнені.');
+      return;
+    } else if (formData.phone.length < 9 || formData.name.length === 1 || formData.surname.length === 1) {
+      toastInfo('Всі поля мають бути заповнені правильно.', 'Будь ласка, введіть коректні дані!');
+      return;
+    } else {
+      const { error } = await supabase.from('bookings').insert([
+        {
+          client_id: userInfo?.id || null,
+          procedure_id: currentProcedure?.id,
+          date: formData.date,
+          time: formData.time,
+          client_name: formData.name,
+          client_surname: formData.surname,
+          client_phone: formData.phone,
+        },
+      ]);
+      if (error) {
+        toastError(`Повідомлення про помилку: ${error.message}`, 'Помилка при бронюванні послуги.');
+        console.log(error.message);
+      } else {
+        toastSuccess(`Дякуємо, ${formData.name}!`, 'Ваша заявка успішно прийнята.');
+      }
+      closeWindow();
+    }
+  };
+
   return (
     <div className={modalStyle.modal} onClick={clickToClose}>
       <div className={`${modalStyle.content} ${modalStyle.scrollStyled}`}>
@@ -128,29 +184,7 @@ export function ModalWindow(): JSX.Element {
               </div>
             </div>
           </div>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              setIsSubmitted(true);
-              if (!formData.name || !formData.surname || !formData.phone || !formData.date || !formData.time) {
-                toastInfo('Будь ласка, заповніть всі поля!', 'Всі поля мають бути заповнені.');
-                return;
-              } else if (formData.phone.length < 9 || formData.name.length === 1 || formData.surname.length === 1) {
-                toastInfo('Всі поля мають бути заповнені правильно.', 'Будь ласка, введіть коректні дані!');
-                return;
-              } else {
-                const orderData = {
-                  procedureId: currentProcedure?.id,
-                  procedureName: currentProcedure?.title,
-                  customer: formData,
-                };
-                console.log('Новий запис: ', orderData);
-                toastSuccess(`Дякуємо, ${formData.name}!`, 'Ваша заявка успішно прийнята.');
-                closeWindow();
-              }
-            }}
-            className={modalStyle.orderForm}
-          >
+          <form onSubmit={handleSubmit} className={modalStyle.orderForm}>
             <h2 className={modalStyle.title}>Форма для запису</h2>
             <div
               className={modalStyle.inputContainer}
@@ -220,7 +254,7 @@ export function ModalWindow(): JSX.Element {
                   <option value="" disabled>
                     Оберіть час
                   </option>
-                  {timeSlots.map((element) => (
+                  {bookedTimes.map((element) => (
                     <option value={element} key={element}>
                       {element}
                     </option>
