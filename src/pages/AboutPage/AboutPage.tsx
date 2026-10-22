@@ -17,11 +17,15 @@ import type { ISpecialist } from '../../common/interfaces/ISpecialist';
 import type { ICertificate } from '../../common/interfaces/ICertificate';
 import nProgress from 'nprogress';
 import '../../common/nprogress/nprogress-custom.css';
+import { Link, useLocation } from 'react-router-dom';
+import { AddSpecialistModal } from './Components/AddSpecialistModal/AddSpecialistModal';
 
 export function AboutPage(): JSX.Element {
   const [selectedAward, setSelectedAward] = useState<ICertificate | null>(null);
   const [specialists, setSpecialists] = useState<ISpecialist[]>();
   const [certificates, setCertificates] = useState<ICertificate[]>();
+  const [modalWindow, openModalWindow] = useState(false);
+  const location = useLocation();
 
   const cardsServices = [
     {
@@ -110,6 +114,13 @@ export function AboutPage(): JSX.Element {
     };
   }, [selectedAward]);
 
+  useEffect(() => {
+    if (location.pathname.includes('api/specialists')) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      openModalWindow(true);
+    }
+  }, [location]);
+
   return (
     <div className={aboutStyle.aboutPage}>
       <Header />
@@ -140,9 +151,13 @@ export function AboutPage(): JSX.Element {
             <CardSpecialist specialist={specialist} key={specialist.id} />
           ))}
         </div>
+        <Link to={'/api/specialists'} className={aboutStyle.addSpecialist} onClick={() => openModalWindow(true)}>
+          Додати спеціаліста
+        </Link>
       </div>
       <Footer />
       {selectedAward && <CertificateModal certificate={selectedAward} setSelectedAward={setSelectedAward} />}
+      {modalWindow && <AddSpecialistModal openModalWindow={openModalWindow} modalWindow={modalWindow} />}
     </div>
   );
 }
