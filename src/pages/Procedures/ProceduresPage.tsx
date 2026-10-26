@@ -12,7 +12,7 @@ import { supabase } from '../../api/supabase';
 import { toastError } from '../../toastr/error/toastr-options-error';
 import nProgress from 'nprogress';
 import '../../common/nprogress/nprogress-custom.css';
-import { AddProcedureWindow } from './components/addProcedureWindow';
+import { AddProcedureWindow } from './components/AddProcedureWindow';
 
 export function ProceduresPage(): JSX.Element {
   const dispatch = useAppDispatch();
