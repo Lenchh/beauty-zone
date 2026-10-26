@@ -88,7 +88,7 @@ export function AboutPage(): JSX.Element {
   const scrollPosition = useRef(0);
 
   useEffect(() => {
-    if (selectedAward) {
+    if (selectedAward || modalWindow) {
       scrollPosition.current = window.scrollY;
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
       document.body.style.position = 'fixed';
@@ -112,7 +112,7 @@ export function AboutPage(): JSX.Element {
       document.body.style.overflow = '';
       document.body.style.paddingRight = '';
     };
-  }, [selectedAward]);
+  }, [selectedAward, modalWindow]);
 
   useEffect(() => {
     if (location.pathname.includes('api/specialists')) {

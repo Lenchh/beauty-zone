@@ -36,20 +36,21 @@ export function AddSpecialistModal({ openModalWindow }: props): JSX.Element {
   };
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (/^[а-яА-ЯіІїЇєЄґҐ'’-]*$/.test(e.target.value)) {
+    if (/^[а-яА-ЯіІїЇєЄґҐ\s'’-]*$/.test(e.target.value)) {
       const { name, value } = e.target;
-      if (name === 'name') setSpecialistInfo((prev) => ({ ...prev, name: value }));
-      if (name === 'surname') setSpecialistInfo((prev) => ({ ...prev, surname: value }));
-      if (name === 'specialty') setSpecialistInfo((prev) => ({ ...prev, specialty: value }));
-      if (name === 'experience') setSpecialistInfo((prev) => ({ ...prev, experience: value }));
-      if (name === 'description') setSpecialistInfo((prev) => ({ ...prev, description: value }));
-      if (name === 'imgUrl') setSpecialistInfo((prev) => ({ ...prev, imgUrl: value }));
+      setSpecialistInfo((prev) => ({ ...prev, [name]: value }));
     }
   };
 
   const handleExperienceChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (/^[0-8а-яА-ЯіІїЇєЄґҐ'’-]*$/.test(e.target.value)) {
+    if (/^[0-8а-яА-ЯіІїЇєЄґҐ '’-]*$/.test(e.target.value)) {
       setSpecialistInfo((prev) => ({ ...prev, experience: e.target.value }));
+    }
+  };
+
+  const handleDescChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    if (/^[0-8а-яА-ЯіІїЇєЄґҐ '’-]*$/.test(e.target.value)) {
+      setSpecialistInfo((prev) => ({ ...prev, description: e.target.value }));
     }
   };
 
@@ -129,12 +130,11 @@ export function AddSpecialistModal({ openModalWindow }: props): JSX.Element {
           />
         </div>
         <div className={modalStyle.inputContainer}>
-          <input
-            type="text"
+          <textarea
             name="description"
             placeholder="Трохи інформації про спеціаліста"
             value={newSpecialist.description}
-            onChange={handleNameChange}
+            onChange={handleDescChange}
             style={
               isSubmitted && newSpecialist.description.length < 10 ? { borderColor: 'red' } : { borderColor: '#2b7fff' }
             }

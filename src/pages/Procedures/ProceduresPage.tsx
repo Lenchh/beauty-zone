@@ -4,7 +4,7 @@ import proceduresStyle from './procedures.module.scss';
 import { Footer } from '../../common/components/Footer/Footer';
 import { ModalWindow } from './components/ModalWindow';
 import { useAppDispatch, useAppSelector } from '../../featchers/hooks';
-import { useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { openModal } from '../../featchers/slices/modalSlice';
 import { ProcedureBlock } from './components/ProcedureBlock';
 import type { IProcedure } from '../../common/interfaces/IProcedure';
@@ -12,6 +12,7 @@ import { supabase } from '../../api/supabase';
 import { toastError } from '../../toastr/error/toastr-options-error';
 import nProgress from 'nprogress';
 import '../../common/nprogress/nprogress-custom.css';
+import { AddProcedureWindow } from './components/addProcedureWindow';
 
 export function ProceduresPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -27,6 +28,8 @@ export function ProceduresPage(): JSX.Element {
   ];
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [procedures, setProcedures] = useState<IProcedure[]>();
+  const [modalWindow, openModalWindow] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,6 +46,13 @@ export function ProceduresPage(): JSX.Element {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (location.pathname.includes('api/procedures')) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      openModalWindow(true);
+    }
+  }, [location]);
+
   const handleChange = (category: string) => {
     if (selectedFilters.includes(category)) setSelectedFilters(selectedFilters.filter((item) => item !== category));
     else setSelectedFilters([...selectedFilters, category]);
@@ -53,7 +63,7 @@ export function ProceduresPage(): JSX.Element {
   const scrollPosition = useRef(0);
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen || modalWindow) {
       scrollPosition.current = window.scrollY;
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
       document.body.style.position = 'fixed';
@@ -77,7 +87,7 @@ export function ProceduresPage(): JSX.Element {
       document.body.style.overflow = '';
       document.body.style.paddingRight = '';
     };
-  }, [isOpen]);
+  }, [isOpen, modalWindow]);
 
   useEffect(() => {
     if (procedureId) {
@@ -120,9 +130,13 @@ export function ProceduresPage(): JSX.Element {
               : procedures?.map((procedure) => <ProcedureBlock procedure={procedure} key={procedure.id} />)}
           </div>
         </div>
+        <Link to={'/api/procedures'} className={proceduresStyle.addProcedure} onClick={() => openModalWindow(true)}>
+          Додати процедуру
+        </Link>
       </div>
       <Footer />
       {isOpen && <ModalWindow />}
+      {modalWindow && <AddProcedureWindow modalWindow={modalWindow} openModalWindow={openModalWindow} />}
     </div>
   );
 }

@@ -59,6 +59,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/procedures" element={<ProceduresPage />} />
         <Route path="/procedures/procedure/:procedureId" element={<ProceduresPage />} />
+        <Route path="/api/procedures" element={<ProceduresPage />} />
         <Route path="/aboutUs" element={<AboutPage />} />
         <Route path="/api/specialists" element={<AboutPage />} />
         <Route path="/login" element={<Login />} />

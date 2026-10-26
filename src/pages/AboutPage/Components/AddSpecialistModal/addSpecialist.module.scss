@@ -16,6 +16,7 @@
   max-width: 900px;
   height: 80%;
   max-height: 550px;
+  overflow-y: auto;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -35,6 +36,11 @@
     font-weight: bold;
     font-size: var(--font-size-text);
   }
+}
+
+.scrollStyled {
+  scrollbar-color: #2b7fff #2b80ff00;
+  scrollbar-width: thin;
 }
 
 .close {
@@ -61,7 +67,8 @@
   display: flex;
   justify-content: center;
 
-  input {
+  input,
+  textarea {
     border-radius: 24px;
     width: 65%;
     padding: 10px;
@@ -87,5 +94,36 @@
   &:hover {
     background-color: var(--bg-color);
     color: var(--secondary-color);
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .content {
+    width: 60%;
+  }
+  .inputContainer {
+    input,
+    textarea {
+      width: 75%;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .content {
+    width: 60%;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .content {
+    width: 90%;
+  }
+
+  .inputContainer {
+    input,
+    textarea {
+      width: 85%;
+    }
   }
 }
