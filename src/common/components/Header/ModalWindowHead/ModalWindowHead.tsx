@@ -2,14 +2,13 @@ import { type JSX } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import windowHeadStyle from './modalWindowHead.module.scss';
 import headerStyle from '../header.module.scss';
-import { useAppSelector } from '../../../../featchers/hooks';
 
 interface props {
   openModalWindow: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function ModalWindowHead({ openModalWindow }: props): JSX.Element {
-  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const isAuthenticated = localStorage.getItem('token');
 
   const getLinkClass = ({ isActive }: { isActive: boolean }) =>
     isActive ? `${headerStyle.link} ${headerStyle.active}` : headerStyle.link;

@@ -1,8 +1,6 @@
 import { useState, type ChangeEvent, type JSX } from 'react';
 import profileStyle from '../profile.module.scss';
 import type { IUser } from '../../../common/interfaces/IUser';
-import nProgress from 'nprogress';
-import { supabase } from '../../../api/supabase';
 import { toastError } from '../../../toastr/error/toastr-options-error';
 import { toastSuccess } from '../../../toastr/success/toastr-options-success';
 import { toastInfo } from '../../../toastr/info/toastr-options-info';
@@ -10,6 +8,7 @@ import { validate } from 'email-validator';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logOutUser, setUser } from '../../../featchers/slices/authSlice';
+import instance from '../../../api/request';
 
 interface props {
   userInfo: IUser;
@@ -63,45 +62,26 @@ export function EditInfoForm({ userInfo, oldUserInfo, setUserInfo }: props): JSX
       toastInfo('Введіть коректні дані.', 'Некоректні дані');
       return;
     }
-    setIsLoading(true);
-    nProgress.start();
-    const currentValue = userInfo[fieldName];
-    if (fieldName === 'email') {
-      const { error } = await supabase.auth.updateUser({ email: currentValue });
-      if (error) {
-        toastError(`Повідомлення про помилку: ${error.message}`, 'Помилка при збереженні даних');
-      } else {
-        dispatch(setUser({ ...oldUserInfo, email: currentValue }));
-        toastSuccess('Дані збережено.', 'Дані успішно змінені.');
-      }
-      setIsLoading(false);
-      nProgress.done();
-      return;
-    }
-    const { error } = await supabase
-      .from('clients')
-      .update({ [fieldName]: currentValue })
-      .eq('id', userInfo.id);
-    if (error) {
-      toastError(`Повідомлення про помилку: ${error.message}`, 'Помилка при збереженні даних');
-    } else {
+    try {
+      setIsLoading(true);
+      const currentValue = userInfo[fieldName];
+      const updateData = {
+        [fieldName]: currentValue,
+      };
+      await instance.patch('/api/users/profile', updateData);
       dispatch(setUser({ ...oldUserInfo, [fieldName]: currentValue }));
       toastSuccess('Дані збережено.', 'Дані успішно змінені.');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      toastError(`Повідомлення про помилку: ${error}`, 'Помилка при збереженні даних');
     }
     setIsLoading(false);
-    nProgress.done();
   };
 
   const handleLogOut = async () => {
-    nProgress.start();
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      toastError('Помилка при виході з акаунту.', 'Помилка');
-    } else {
-      dispatch(logOutUser());
-      localStorage.removeItem('userId');
-    }
-    nProgress.done();
+    dispatch(logOutUser());
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
     navigate('/');
   };
 

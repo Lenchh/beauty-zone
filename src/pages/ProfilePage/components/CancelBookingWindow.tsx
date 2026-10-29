@@ -1,9 +1,9 @@
 import type { JSX } from 'react';
 import modalWindowStyle from './cancelBooking.module.scss';
-import type { IBooking } from './VisitHistoryComponent';
-import { supabase } from '../../../api/supabase';
 import { toastError } from '../../../toastr/error/toastr-options-error';
 import { toastSuccess } from '../../../toastr/success/toastr-options-success';
+import type { IBooking } from '../../../common/interfaces/IBooking';
+import instance from '../../../api/request';
 
 interface props {
   openModalWindow: React.Dispatch<React.SetStateAction<IBooking | null>>;
@@ -17,13 +17,18 @@ export function CancelBookingWindow({ openModalWindow, infoBooking, handleBookin
   }
 
   const handleCancelBooking = async () => {
-    const { error } = await supabase.from('bookings').update({ status: 'cancelled' }).eq('id', infoBooking?.id);
-    if (error) {
-      toastError(`${error.message}`, 'Помилка скасування:');
-    } else {
+    try {
+      const updateData = {
+        id: infoBooking?.id,
+        status: 'cancelled',
+      };
+      await instance.patch('/api/bookings', updateData);
       toastSuccess('', 'Запис успішно скасовано!');
       handleBookingCancelled(infoBooking!.id);
       openModalWindow(null);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      toastError(`${error}`, 'Помилка скасування:');
     }
   };
 

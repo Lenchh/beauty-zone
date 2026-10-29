@@ -11,14 +11,14 @@ import { CardService } from '../../common/components/ServiceCard/CardService';
 import { CertificateModal } from './Components/CertificateModal/CertificateModal';
 import { CardSpecialist } from './Components/CardSpecialist/CardSpecialist';
 import { Footer } from '../../common/components/Footer/Footer';
-import { supabase } from '../../api/supabase';
 import { toastError } from '../../toastr/error/toastr-options-error';
 import type { ISpecialist } from '../../common/interfaces/ISpecialist';
 import type { ICertificate } from '../../common/interfaces/ICertificate';
-import nProgress from 'nprogress';
 import '../../common/nprogress/nprogress-custom.css';
 import { Link, useLocation } from 'react-router-dom';
 import { AddSpecialistModal } from './Components/AddSpecialistModal/AddSpecialistModal';
+import instance from '../../api/request';
+import { useAppSelector } from '../../featchers/hooks';
 
 export function AboutPage(): JSX.Element {
   const [selectedAward, setSelectedAward] = useState<ICertificate | null>(null);
@@ -26,6 +26,7 @@ export function AboutPage(): JSX.Element {
   const [certificates, setCertificates] = useState<ICertificate[]>();
   const [modalWindow, openModalWindow] = useState(false);
   const location = useLocation();
+  const userInfo = useAppSelector((state) => state.auth.userInfo);
 
   const cardsServices = [
     {
@@ -65,22 +66,17 @@ export function AboutPage(): JSX.Element {
 
   useEffect(() => {
     const fetchData = async () => {
-      nProgress.start();
-      const [specialistsResult, certificatesResult] = await Promise.all([
-        supabase.from('specialists').select('*'),
-        supabase.from('certificates').select('*'),
-      ]);
-      if (specialistsResult.error) {
-        toastError('Помилка завантаження даних про спеціалістів:', specialistsResult.error.message);
-      } else if (specialistsResult.data) {
+      try {
+        const [specialistsResult, certificatesResult] = await Promise.all([
+          instance.get('/api/specialists'),
+          instance.get('/api/certificates'),
+        ]);
         setSpecialists(specialistsResult.data);
-      }
-      if (certificatesResult.error) {
-        toastError('Помилка завантаження сертифікатів:', certificatesResult.error.message);
-      } else if (certificatesResult.data) {
         setCertificates(certificatesResult.data);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        toastError(error, 'Помилка завантаження даних:');
       }
-      nProgress.done();
     };
     fetchData();
   }, []);
@@ -115,7 +111,7 @@ export function AboutPage(): JSX.Element {
   }, [selectedAward, modalWindow]);
 
   useEffect(() => {
-    if (location.pathname.includes('api/specialists')) {
+    if (location.pathname.includes('/aboutUs/addSpecialists')) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       openModalWindow(true);
     }
@@ -151,9 +147,15 @@ export function AboutPage(): JSX.Element {
             <CardSpecialist specialist={specialist} key={specialist.id} />
           ))}
         </div>
-        <Link to={'/api/specialists'} className={aboutStyle.addSpecialist} onClick={() => openModalWindow(true)}>
-          Додати спеціаліста
-        </Link>
+        {userInfo?.role === 'admin' && (
+          <Link
+            to={'/aboutUs/addSpecialists'}
+            className={aboutStyle.addSpecialist}
+            onClick={() => openModalWindow(true)}
+          >
+            Додати спеціаліста
+          </Link>
+        )}
       </div>
       <Footer />
       {selectedAward && <CertificateModal certificate={selectedAward} setSelectedAward={setSelectedAward} />}

@@ -1,17 +1,17 @@
 import { useState, type ChangeEvent, type JSX } from 'react';
 import modalStyle from './addProcedure.module.scss';
-import type { IProcedure } from '../../../common/interfaces/IProcedure';
 import { useNavigate } from 'react-router-dom';
 import { toastInfo } from '../../../toastr/info/toastr-options-info';
 import { toastSuccess } from '../../../toastr/success/toastr-options-success';
+import { toastError } from '../../../toastr/error/toastr-options-error';
+import instance from '../../../api/request';
 interface props {
   modalWindow: boolean;
   openModalWindow: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function AddProcedureWindow({ openModalWindow }: props): JSX.Element {
-  const [newProcedure, setProcedureInfo] = useState<IProcedure>({
-    id: 0,
+  const [newProcedure, setProcedureInfo] = useState({
     title: '',
     price: 100,
     duration: '',
@@ -66,7 +66,13 @@ export function AddProcedureWindow({ openModalWindow }: props): JSX.Element {
       return;
     }
     console.log(newProcedure);
-    toastSuccess('Дані збережено.', 'Дані успішно змінені.');
+    try {
+      await instance.post('/api/procedures', newProcedure);
+      toastSuccess('Дані збережено.', 'Процедуру створено.');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      toastError(error, 'Помилка завантаження даних:');
+    }
     closeWindow();
   };
 

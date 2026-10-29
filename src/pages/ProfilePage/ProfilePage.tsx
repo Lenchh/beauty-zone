@@ -18,7 +18,7 @@ export function ProfilePage(): JSX.Element {
   });
 
   useEffect(() => {
-    if (userAcc && userInfo.id === '') {
+    if (userAcc) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setUserInfo({
         id: userAcc.id,

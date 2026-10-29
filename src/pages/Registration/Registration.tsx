@@ -6,10 +6,9 @@ import { validate } from 'email-validator';
 import registerStyle from './registration.module.scss';
 import { toastInfo } from '../../toastr/info/toastr-options-info';
 import homeIcon from '../../assets/LoginPage/homeIcon.svg';
-import nProgress from 'nprogress';
-import { supabase } from '../../api/supabase';
 import visibilityIcon from '../../assets/LoginPage/visibility (1).svg';
 import visibilityOffIcon from '../../assets/LoginPage/visibilityOff.svg';
+import instance from '../../api/request';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../featchers/slices/authSlice';
 
@@ -54,46 +53,42 @@ export function Registration(): JSX.Element {
       toastInfo('Пароль повинен містити щонайменше 6 символів.', 'Некоректні дані');
       return;
     }
-    nProgress.start();
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
-    if (error) {
-      if (error.message === 'User already registered') {
-        toastError('Користувача вже зареєстровано.', 'Помилка реєстрації');
-      } else {
-        toastError(`Помилка реєстрації ${error.message}`, 'Помилка реєстрації');
-        console.log('Помилка реєстрації', error);
-      }
-    } else if (data.user) {
-      const { error: profileError } = await supabase.from('clients').insert([
-        {
-          id: data.user.id,
-          name,
-          surname,
-          phone,
-        },
-      ]);
-      if (profileError) {
-        toastError(`${profileError.message}`, 'Помилка при збереженні акаунту.');
-        console.log('Помилка при збереженні акаунту.', profileError);
-      } else {
+    try {
+      const newUser = {
+        name: name,
+        surname: surname,
+        phone: phone,
+        email: email,
+        password: password,
+      };
+      await instance.post('/api/auth/register', newUser);
+      toastSuccess('Користувача успішно зареєстровано.', 'Успішна реєстрація');
+      const response = await instance.post('/api/auth/login', { email, password });
+      const { token, user } = response.data;
+      if (token) {
+        localStorage.setItem('token', token);
+        localStorage.setItem('role', user.role);
+        toastSuccess('Користувача успішно авторизовано.', 'Успішна авторизація');
         dispatch(
           setUser({
-            id: data.user.id,
-            name,
-            surname,
-            phone,
-            email,
+            id: user.id,
+            name: user.name,
+            surname: user.surname,
+            phone: user.phone,
+            email: user.email,
+            role: user.role,
           })
         );
-        localStorage.setItem('userId', data.user.id);
-        toastSuccess('Користувача успішно зареєстровано.', 'Успішна реєстрація');
         navigate('/');
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      if (error.status === 409) {
+        toastError('Користувач з такою електронною поштою вже існує.', 'Помилка реєстрації');
+      } else {
+        toastError(`Помилка: ${error}`, 'Помилка реєстрації');
+      }
     }
-    nProgress.done();
   };
   return (
     <div className={registerStyle.container}>

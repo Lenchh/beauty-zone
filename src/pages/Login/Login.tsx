@@ -1,4 +1,4 @@
-import { useState, type JSX } from 'react';
+import { useEffect, useState, type JSX } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toastError } from '../../toastr/error/toastr-options-error';
 import { validate } from 'email-validator';
@@ -6,8 +6,7 @@ import { toastInfo } from '../../toastr/info/toastr-options-info';
 import { toastSuccess } from '../../toastr/success/toastr-options-success';
 import loginStyle from '../Registration/registration.module.scss';
 import homeIcon from '../../assets/LoginPage/homeIcon.svg';
-import nProgress from 'nprogress';
-import { supabase } from '../../api/supabase';
+import instance from '../../api/request';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../featchers/slices/authSlice';
 
@@ -17,6 +16,14 @@ export function Login(): JSX.Element {
   const [password, setPassword] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const isSessionExpired = localStorage.getItem('isSessionExpired');
+    if (isSessionExpired) {
+      toastInfo('Будь ласка, авторизуйтесь знову для продовження роботи.', 'Сесія завершена');
+      localStorage.removeItem('isSessionExpired');
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
@@ -29,41 +36,37 @@ export function Login(): JSX.Element {
       toastInfo('Введіть коректний пароль.', 'Некоректні дані');
       return;
     }
-    nProgress.start();
-    const { data: user, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (error) {
-      if (error?.message === 'Invalid login credentials') {
-        toastError('Неправильний логін або пароль.', 'Помилка авторизації');
-      } else {
-        toastError(`Помилка: ${error.message}`, 'Помилка авторизації');
-      }
-    } else {
-      const { data, error } = await supabase
-        .from('clients')
-        .select('name,surname,phone')
-        .eq('id', user.user.id)
-        .single();
-      if (error) {
-        toastError(`Повідомлення про помилку: ${error.message}`, 'Помилка завантаження даних');
-      } else if (data) {
+    try {
+      const userData = {
+        email,
+        password,
+      };
+      const response = await instance.post('/api/auth/login', userData);
+      const { token, user } = response.data;
+      if (token) {
+        localStorage.setItem('token', token);
+        localStorage.setItem('role', user.role);
+        toastSuccess('Користувача успішно авторизовано.', 'Успішна авторизація');
         dispatch(
           setUser({
-            id: user.user.id,
-            name: data.name,
-            surname: data.surname,
-            phone: data.phone,
-            email,
+            id: user.id,
+            name: user.name,
+            surname: user.surname,
+            phone: user.phone,
+            email: user.email,
+            role: user.role,
           })
         );
-        localStorage.setItem('userId', user.user.id);
-        toastSuccess('Вітаємо!', 'Успішна авторизація');
+        navigate('/');
       }
-      navigate('/');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      if (error.status === 401) {
+        toastError('Неправильний логін або пароль.', 'Помилка авторизації');
+      } else {
+        toastError(`Помилка: ${error}`, 'Помилка авторизації');
+      }
     }
-    nProgress.done();
   };
   return (
     <div className={loginStyle.container}>

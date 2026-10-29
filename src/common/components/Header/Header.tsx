@@ -3,11 +3,10 @@ import { Link, NavLink } from 'react-router-dom';
 import headerStyle from './header.module.scss';
 import menuIcon from '../../../assets/HomePage/header/menu.svg';
 import { ModalWindowHead } from './ModalWindowHead/ModalWindowHead';
-import { useAppSelector } from '../../../featchers/hooks';
 
 export function Header(): JSX.Element {
   const [modalWindow, openModalWindow] = useState(false);
-  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const isAuthenticated = localStorage.getItem('token');
 
   useEffect(() => {
     if (modalWindow) {

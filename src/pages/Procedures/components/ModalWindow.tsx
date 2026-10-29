@@ -10,8 +10,8 @@ import priceIcon from '../../../assets/ProcedurePage/price.svg';
 import userIcon from '../../../assets/ProcedurePage/user.svg';
 import telephoneIcon from '../../../assets/ProcedurePage/telephone.svg';
 import calendarIcon from '../../../assets/ProcedurePage/calendar.svg';
-import { supabase } from '../../../api/supabase';
 import { toastError } from '../../../toastr/error/toastr-options-error';
+import instance from '../../../api/request';
 
 export function ModalWindow(): JSX.Element {
   const getMinDate = () => {
@@ -29,34 +29,42 @@ export function ModalWindow(): JSX.Element {
   const [formData, setFormData] = useState({
     name: userInfo?.name || '',
     surname: userInfo?.surname || '',
-    phone: userInfo?.phone.slice(4) || '',
+    phone: userInfo?.phone || '',
     date: '',
     time: '',
   });
-  const timeSlots = ['09:00', '10:15', '11:30', '12:45', '14:00', '15:15', '16:30', '17:45', '19:00'];
-  const [bookedTimes, setBookedTimes] = useState<string[]>(timeSlots);
+  const [bookedTimes, setBookedTimes] = useState<string[]>([
+    '09:00',
+    '10:15',
+    '11:30',
+    '12:45',
+    '14:00',
+    '15:15',
+    '16:30',
+    '17:45',
+    '19:00',
+  ]);
 
   useEffect(() => {
-    if (!formData.date) {
+    if (!formData.date || !currentProcedure?.id) {
       return;
     }
     const fetchBookedTimes = async () => {
-      const { data, error } = await supabase
-        .from('bookings')
-        .select('time')
-        .eq('date', formData.date)
-        .eq('procedure_id', currentProcedure?.id)
-        .eq('status', 'active');
-      if (error) {
-        toastError('Помилка завантаження вільного часу', `${error.message}`);
-      } else if (data) {
-        const formattedTimes = data.map((booking) => booking.time.substring(0, 5));
-        const filterTimeSlots = timeSlots.filter((booking) => !formattedTimes.includes(booking));
-        setBookedTimes(filterTimeSlots);
+      try {
+        const response = await instance.get('/api/bookings/available-times', {
+          params: {
+            date: formData.date,
+            procedureId: currentProcedure.id,
+          },
+        });
+        setBookedTimes(response.data);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        toastError('Помилка завантаження вільного часу', error);
       }
     };
     fetchBookedTimes();
-  }, [formData.date]);
+  }, [formData.date, currentProcedure?.id]);
 
   useEffect(() => {
     if (userInfo) {
@@ -65,7 +73,7 @@ export function ModalWindow(): JSX.Element {
         ...formData,
         name: userInfo.name,
         surname: userInfo.surname,
-        phone: userInfo.phone.slice(4),
+        phone: userInfo.phone,
       });
     }
   }, [userInfo]);
@@ -132,26 +140,24 @@ export function ModalWindow(): JSX.Element {
     } else if (formData.phone.length < 9 || formData.name.length === 1 || formData.surname.length === 1) {
       toastInfo('Всі поля мають бути заповнені правильно.', 'Будь ласка, введіть коректні дані!');
       return;
-    } else {
-      const { error } = await supabase.from('bookings').insert([
-        {
-          client_id: userInfo?.id || null,
-          procedure_id: currentProcedure?.id,
-          date: formData.date,
-          time: formData.time,
-          client_name: formData.name,
-          client_surname: formData.surname,
-          client_phone: formData.phone,
-        },
-      ]);
-      if (error) {
-        toastError(`Повідомлення про помилку: ${error.message}`, 'Помилка при бронюванні послуги.');
-        console.log(error.message);
-      } else {
-        toastSuccess(`Дякуємо, ${formData.name}!`, 'Ваша заявка успішно прийнята.');
-      }
-      closeWindow();
     }
+    try {
+      const combinedDateTime = `${formData.date}T${formData.time}:00.000Z`;
+      const bookingData = {
+        procedureId: currentProcedure?.id,
+        date: formData.date,
+        time: combinedDateTime,
+        guestName: formData.name,
+        guestSurname: formData.surname,
+        guestPhone: formData.phone,
+      };
+      await instance.post('/api/bookings', bookingData);
+      toastSuccess(`Дякуємо, ${formData.name}!`, 'Ваша заявка успішно прийнята.');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      toastError('Помилка при створенні запису:', error);
+    }
+    closeWindow();
   };
 
   return (

@@ -8,11 +8,10 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 import { openModal } from '../../featchers/slices/modalSlice';
 import { ProcedureBlock } from './components/ProcedureBlock';
 import type { IProcedure } from '../../common/interfaces/IProcedure';
-import { supabase } from '../../api/supabase';
 import { toastError } from '../../toastr/error/toastr-options-error';
-import nProgress from 'nprogress';
 import '../../common/nprogress/nprogress-custom.css';
 import { AddProcedureWindow } from './components/AddProcedureWindow';
+import instance from '../../api/request';
 
 export function ProceduresPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -30,24 +29,23 @@ export function ProceduresPage(): JSX.Element {
   const [procedures, setProcedures] = useState<IProcedure[]>();
   const [modalWindow, openModalWindow] = useState(false);
   const location = useLocation();
+  const userInfo = useAppSelector((state) => state.auth.userInfo);
 
   useEffect(() => {
     const fetchData = async () => {
-      nProgress.start();
-      const { data, error } = await supabase.from('procedures').select('*');
-      if (error) {
-        toastError('Помилка завантаження процедур:', error.message);
+      try {
+        const responce = await instance.get('/api/procedures');
+        setProcedures(responce.data);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        toastError(error, 'Помилка завантаження даних:');
       }
-      if (data) {
-        setProcedures(data);
-      }
-      nProgress.done();
     };
     fetchData();
   }, []);
 
   useEffect(() => {
-    if (location.pathname.includes('api/procedures')) {
+    if (location.pathname.includes('/procedures/addProcedures')) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       openModalWindow(true);
     }
@@ -130,9 +128,15 @@ export function ProceduresPage(): JSX.Element {
               : procedures?.map((procedure) => <ProcedureBlock procedure={procedure} key={procedure.id} />)}
           </div>
         </div>
-        <Link to={'/api/procedures'} className={proceduresStyle.addProcedure} onClick={() => openModalWindow(true)}>
-          Додати процедуру
-        </Link>
+        {userInfo?.role === 'admin' && (
+          <Link
+            to={'/procedures/addProcedures'}
+            className={proceduresStyle.addProcedure}
+            onClick={() => openModalWindow(true)}
+          >
+            Додати процедуру
+          </Link>
+        )}
       </div>
       <Footer />
       {isOpen && <ModalWindow />}

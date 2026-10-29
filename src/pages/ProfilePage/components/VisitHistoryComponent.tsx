@@ -1,61 +1,31 @@
 import { useEffect, useState, type JSX } from 'react';
 import profileStyle from '../profile.module.scss';
-import { supabase } from '../../../api/supabase';
 import { toastError } from '../../../toastr/error/toastr-options-error';
 import { CancelBookingWindow } from './CancelBookingWindow';
-
-export interface IBooking {
-  id: string;
-  date: string;
-  time: string;
-  procedure: string;
-  status: string;
-}
+import type { IBooking } from '../../../common/interfaces/IBooking';
+import instance from '../../../api/request';
+import { useAppSelector } from '../../../featchers/hooks';
 
 export function VisitHistoryComponent(): JSX.Element {
   const [bookingsHistory, setBookingsHistory] = useState<IBooking[]>();
   const [modalWindow, openModalWindow] = useState<IBooking | null>(null);
-  const userId = localStorage.getItem('userId');
+  const userInfo = useAppSelector((state) => state.auth.userInfo);
 
   useEffect(() => {
     const fetchBookingsHistory = async () => {
-      const { data, error } = await supabase
-        .from('bookings')
-        .select(`id, date, time, procedures (title), status`)
-        .eq('client_id', userId);
-      if (error) {
-        toastError('Помилка завантаження історіі записів', `${error.message}`);
-        console.log(error.message);
-      } else if (data) {
+      try {
+        const response = await instance.get('/api/bookings');
+        setBookingsHistory(response.data);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const formattedBookings = data.map((item: any) => {
-          if (item.status === 'cancelled') {
-            return {
-              id: item.id,
-              date: item.date,
-              time: item.time,
-              procedure: item.procedures?.title,
-              status: item.status,
-            };
-          }
-          const now = new Date();
-          const bookingDate = new Date(`${item.date}T${item.time}`);
-          return {
-            id: item.id,
-            date: item.date,
-            time: item.time,
-            procedure: item.procedures?.title,
-            status: bookingDate <= now ? 'past' : 'upcoming',
-          };
-        });
-        setBookingsHistory(formattedBookings);
+      } catch (error: any) {
+        toastError('Помилка завантаження історіі записів', `${error}`);
       }
     };
     fetchBookingsHistory();
   }, []);
 
-  const futureBookings = bookingsHistory?.filter((b) => b.status === 'upcoming') || [];
-  const previousBookings = bookingsHistory?.filter((b) => b.status === 'past' || b.status === 'cancelled') || [];
+  const futureBookings = bookingsHistory?.filter((b) => b.status === 'active') || [];
+  const previousBookings = bookingsHistory?.filter((b) => b.status === 'completed' || b.status === 'cancelled') || [];
 
   const handleBookingCancelled = (cancelledBookingId: string) => {
     setBookingsHistory((prevBookings) => {
@@ -72,9 +42,16 @@ export function VisitHistoryComponent(): JSX.Element {
         {futureBookings.length > 0 ? (
           futureBookings.map((booking) => (
             <div key={booking.id} className={profileStyle.bookingCard}>
-              <p>
-                {booking.date}, {booking.time.substring(0, 5)} - {booking.procedure}
-              </p>
+              {userInfo?.role === 'admin' ? (
+                <p>
+                  {booking.date.substring(0, 10)}, {booking.time.substring(11, 16)} - {booking.procedure.title} -{' '}
+                  {booking.user?.name} {booking.user?.surname} {booking.user?.email}
+                </p>
+              ) : (
+                <p>
+                  {booking.date.substring(0, 10)}, {booking.time.substring(11, 16)} - {booking.procedure.title}
+                </p>
+              )}
               <button onClick={() => openModalWindow(booking)}>Скасувати</button>
             </div>
           ))
@@ -89,10 +66,17 @@ export function VisitHistoryComponent(): JSX.Element {
         {previousBookings.length > 0 ? (
           previousBookings.map((booking) => (
             <div key={booking.id} className={profileStyle.bookingCard}>
-              <p>
-                {booking.date}, {booking.time.substring(0, 5)} - {booking.procedure} -{' '}
-                {booking.status === 'cancelled' && 'СКАСОВАНО'}
-              </p>
+              {userInfo?.role === 'admin' ? (
+                <p>
+                  {booking.date.substring(0, 10)}, {booking.time.substring(11, 16)} - {booking.procedure.title} -{' '}
+                  {booking.user?.name} {booking.user?.surname} {booking.user?.email}
+                </p>
+              ) : (
+                <p>
+                  {booking.date.substring(0, 10)}, {booking.time} - {booking.procedure.title} -{' '}
+                  {booking.status === 'cancelled' && 'СКАСОВАНО'}
+                </p>
+              )}
             </div>
           ))
         ) : (

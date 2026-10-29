@@ -1,9 +1,10 @@
 import { useState, type ChangeEvent, type JSX } from 'react';
 import modalStyle from './addSpecialist.module.scss';
 import { useNavigate } from 'react-router-dom';
-import type { ISpecialist } from '../../../../common/interfaces/ISpecialist';
 import { toastInfo } from '../../../../toastr/info/toastr-options-info';
 import { toastSuccess } from '../../../../toastr/success/toastr-options-success';
+import instance from '../../../../api/request';
+import { toastError } from '../../../../toastr/error/toastr-options-error';
 
 interface props {
   modalWindow: boolean;
@@ -11,8 +12,7 @@ interface props {
 }
 
 export function AddSpecialistModal({ openModalWindow }: props): JSX.Element {
-  const [newSpecialist, setSpecialistInfo] = useState<ISpecialist>({
-    id: 0,
+  const [newSpecialist, setSpecialistInfo] = useState({
     name: '',
     surname: '',
     specialty: '',
@@ -72,7 +72,13 @@ export function AddSpecialistModal({ openModalWindow }: props): JSX.Element {
       return;
     }
     console.log(newSpecialist);
-    toastSuccess('Дані збережено.', 'Дані успішно змінені.');
+    try {
+      await instance.post('/api/specialists', newSpecialist);
+      toastSuccess('Дані збережено.', 'Спеціаліста створено.');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      toastError(error, 'Помилка завантаження даних:');
+    }
     closeWindow();
   };
 
